@@ -11,7 +11,7 @@ module RedmineBots::Slack
     def call(params)
       return false if current_user.anonymous?
 
-      oauth = @client.oauth_access(client_id: '346628605728.347578530197', client_secret: 'a9370e717361d6ccff077f551e046768', code: params[:code])
+      oauth = @client.oauth_access(client_id: client_id, client_secret: client_secret, code: params[:code])
       return false unless oauth.ok
 
       user_identity = @client.users_identity(token: oauth.access_token)
@@ -38,6 +38,14 @@ module RedmineBots::Slack
 
     def current_user
       User.current
+    end
+
+    def client_id
+      Setting.plugin_redmine_bots['slack_client_id']
+    end
+
+    def client_secret
+      Setting.plugin_redmine_bots['slack_client_secret']
     end
   end
 end

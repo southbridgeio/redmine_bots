@@ -1,4 +1,4 @@
-Redmine::Plugin.register :redmine_messengers_common do
+Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/centosadmin/redmine_bots'
   description 'This is a platform for building Redmine bots'
@@ -10,6 +10,9 @@ Redmine::Plugin.register :redmine_messengers_common do
     default: {
      'slack_oauth_token' => '',
      'slack_bot_oauth_token' => '',
+     'slack_client_id' => '',
+     'slack_client_secret' => '',
+     'slack_verification_token' => '',
     },
     partial: 'settings/redmine_bots'
   )

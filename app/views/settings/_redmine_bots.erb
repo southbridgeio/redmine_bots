@@ -1,0 +1,34 @@
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.slack_client_id' %>
+  </label>
+  <%= text_field_tag 'settings[slack_client_id]', @settings['slack_client_id'] %>
+</p>
+
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.slack_client_secret' %>
+  </label>
+  <%= text_field_tag 'settings[slack_client_secret]', @settings['slack_client_secret'] %>
+</p>
+
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.slack_verification_token' %>
+  </label>
+  <%= text_field_tag 'settings[slack_verification_token]', @settings['slack_verification_token'] %>
+</p>
+
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.slack_oauth_token' %>
+  </label>
+  <%= text_field_tag 'settings[slack_oauth_token]', @settings['slack_oauth_token'] %>
+</p>
+
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.slack_bot_oauth_token' %>
+  </label>
+  <%= text_field_tag 'settings[slack_bot_oauth_token]', @settings['slack_bot_oauth_token'] %>
+</p>
