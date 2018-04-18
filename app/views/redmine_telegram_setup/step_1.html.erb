@@ -1,0 +1,16 @@
+<h2><%= t 'redmine_bots.settings.telegram.authorize_client' %></h2>
+<hr>
+<p><strong>1. <%= t 'redmine_bots.settings.telegram.auth_step_1' %></strong> — 2. <%= t 'redmine_bots.settings.telegram.auth_step_2' %></p>
+<hr>
+
+<%= form_tag telegram_setup_2_path, method: :post do %>
+  <p>
+    <label>
+      <%= t 'redmine_bots.settings.telegram.phone_number' %>
+    </label>
+    <%= text_field_tag 'phone_number' %>
+    <em class="info"><%= t 'redmine_bots.settings.telegram.phone_number_hint' %></em>
+  </p>
+
+  <input type="submit" value="<%= t 'redmine_bots.settings.telegram.authorize_button_code' %>"> | <%= link_to plugin_settings_path('redmine_bots') do %><%= t 'redmine_bots.settings.telegram.plugin_link' %><% end %>
+<% end %>
