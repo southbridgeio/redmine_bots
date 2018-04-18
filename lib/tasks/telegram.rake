@@ -68,22 +68,22 @@ namespace :redmine_bots do
     end
   end
 
-  task migrate_to_single_bot: :environment do
-    settings_chat = Setting.find_by_name(:plugin_redmine_chat_telegram)
-    settings_intouch = Setting.find_by_name(:plugin_redmine_intouch)
-    settings_2fa = Setting.find_by_name(:plugin_redmine_2fa)
+  task migrate_from_telegram_common: :environment do
+    class TelegramCommonAccount < ActiveRecord::Base
+    end
 
-    setting_name = [settings_chat, settings_intouch, settings_2fa].first(&:present?).try(:name)
-    return if setting_name.blank?
+    TelegramCommonAccount.all.each do |old_account|
+      next if TelegramAccount.find_by(telegram_id: old_account.telegram_id)
+      TelegramAccount.create!(old_account.slice(:telegram_id, :user_id, :username, :first_name, :last_name))
+    end
 
-    p "Using bot from #{setting_name}"
+    telegram_common_settings = Setting.find_by_name(:plugin_redmine_telegram_common)
+    p telegram_common_settings['bot_token']
 
-    old_settings = Setting.public_send(setting_name)
-    bot_token = old_settings[setting_name == 'plugin_redmine_intouch' ? 'telegram_bot_token' : 'bot_token']
+    settings = Setting.find_or_initialize_by(name: 'plugin_redmine_bots')
 
-    settings = Setting.find_by(name: 'plugin_redmine_bots')
-
-    settings.value = settings.value.merge('telegram_bot_token' => bot_token)
-    settings.save
+    settings.value = settings.value.to_h.merge(%w[bot_token api_id api_hash].map { |name| { "telegram_#{name}" => YAML.load(telegram_common_settings[:value])[name] } }.reduce(:merge))
+    settings.save!
+    puts 'Successfully transfered accounts and settings'
   end
 end
