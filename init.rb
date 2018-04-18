@@ -1,3 +1,7 @@
+log_dir = Rails.root.join('log/redmine_bots')
+
+FileUtils.mkdir_p(log_dir) unless Dir.exist?(log_dir)
+
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/centosadmin/redmine_bots'

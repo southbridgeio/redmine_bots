@@ -1,0 +1,79 @@
+<% if @settings['telegram_phone_number'].present? %>
+  <div><strong><%= t 'redmine_bots.settings.telegram.phone_number' %>:</strong> <%= @settings['telegram_phone_number'] %></div>
+  <br>
+<% end %>
+<em class="info"><%= t 'redmine_bots.settings.telegram.authorize_hint' %></em>
+<%= link_to telegram_setup_1_path do %><button type="button"><%= t 'redmine_bots.settings.telegram.authorize_client' %></button><% end %>
+
+<%= link_to telegram_setup_reset_path, method: 'delete' do %><button type="button"><%= t 'redmine_bots.settings.telegram.reset' %></button><% end %>
+
+<br><br>
+
+<h3><%= t 'redmine_bots.requirements.title' %></h3>
+
+<table class="list">
+  <thead>
+  <tr>
+    <th></th>
+    <th><%= t 'redmine_bots.requirements.telegram.valid' %></th>
+    <th><%= t 'redmine_bots.requirements.telegram.description' %></th>
+  </tr>
+  </thead>
+  <tr>
+    <td>TDlib</td>
+    <td>
+      <% if tdlib_path = (TD::Api::Dl.find_lib rescue nil) %>
+      <%= t 'redmine_bots.requirements.yes' %>
+      <% else %>
+      <%= t 'redmine_bots.requirements.no' %>
+      <% end %>
+    </td>
+    <td><%= tdlib_path || t('redmine_bots.requirements.telegram.tdlib_installation').html_safe %></td>
+  </tr>
+</table>
+
+<p>
+  <label for="settings_telegram_bot_token">Bot Token</label>
+  <%= text_field_tag 'settings[telegram_bot_token]', @settings['telegram_bot_token'], size: 50 %>
+</p>
+
+<p>
+  <label for="settings_telegram_api_id">Api ID</label>
+  <%= text_field_tag 'settings[telegram_api_id]', @settings['telegram_api_id'], size: 50 %>
+</p>
+
+<p>
+  <label for="settings_telegram_api_hash">Api Hash</label>
+  <%= text_field_tag 'settings[telegram_api_hash]', @settings['telegram_api_hash'], size: 50 %>
+</p>
+
+<p>
+  <a target="_blank" href ="https://my.telegram.org/apps">API ID and API Hash can be obtained here</a>
+</p>
+
+<hr>
+
+<div style="display: flex; align-items: center;">
+  <div style="flex: 1; padding: 0.5em;">
+    <h3>WebHooks</h3>
+
+    <% if Setting['protocol'] == 'https' %>
+      <%= link_to telegram_bot_init_path, method: 'post' do %><button type="button"><%= t 'redmine_bots.settings.telegram.bot_init' %></button><% end %>
+
+      <%= link_to telegram_bot_deinit_path, method: 'delete' do %><button type="button"><%= t 'redmine_bots.settings.telegram.bot_deinit' %></button><% end %>
+    <% else %>
+    <strong><%= t 'redmine_bots.settings.telegram.web_hooks_warning' %></strong>
+    <% end %>
+  </div>
+
+  <div style="flex: 1; padding: 0.5em;">
+    <h3>getUpdates</h3>
+
+    <pre><%= t 'redmine_bots.settings.telegram.get_updates_hint' %></pre>
+  </div>
+</div>
+
+<%= hidden_field_tag 'settings[telegram_bot_name]', @settings['telegram_bot_name'] %>
+<%= hidden_field_tag 'settings[telegram_bot_id]',   @settings['bot_id']   %>
+<%= hidden_field_tag 'settings[telegram_robot_id]', @settings['telegram_robot_id'] %>
+<%= hidden_field_tag 'settings[telegram_phone_number]', @settings['telegram_phone_number'] %>

@@ -1,0 +1,18 @@
+<h2><%= t 'telegram_common.settings.authorize_client' %></h2>
+<hr>
+<p><%= link_to telegram_setup_1_path do %>1. <%= t 'telegram_common.settings.auth_step_1' %><% end %> — <strong>2. <%= t 'telegram_common.settings.auth_step_2' %></strong></p>
+<hr>
+
+<%= form_tag telegram_setup_authorize_path, method: :post do %>
+  <p>
+    <label>
+      <%= t 'telegram_common.settings.telegram_phone_code' %>
+    </label>
+    <%= text_field_tag 'phone_code' %>
+  </p>
+
+  <input type="hidden" name="phone_number" value="<%= params[:phone_number] %>">
+  <input type="hidden" name="phone_code_hash" value="<%= params[:phone_code_hash] %>">
+
+  <input type="submit" value="<%= t 'telegram_common.settings.authorize_button' %>">
+<% end %>

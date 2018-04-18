@@ -1,8 +1,68 @@
 ru:
   redmine_bots:
+    label:
+      slack: Slack
+      telegram: Telegram
     settings:
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token
       slack_client_id: Client ID
       slack_client_secret: Client Secret
       slack_verification_token: Verification Token
+      telegram:
+        phone_number: "Номер телефона"
+        phone_number_hint: "В формате: 78005553535"
+        phone_code: "Код телеграмма"
+        authorize_button_code: "Получить код авторизации"
+        authorize_client: "Авторизовать клиент Telegram"
+        authorize_hint: "Чтобы авторизировать Telegram, нажмите кнопку ниже. Текущая авторизация сбросится."
+        authorize_button: "Авторизовать"
+        plugin_link: "К настройкам плагина"
+        auth_step_1: "Получение кода авторизации"
+        auth_step_2: "Авторизация"
+        reset: "Сбросить кеш и авторизацию"
+        bot_init: Инициализировать бота
+        bot_deinit: Деинициализировать бота
+        get_updates_hint: bundle exec rake telegram_common:bot
+        web_hooks_warning: Нужен https протокол, чтобы настроить WebHooks
+    requirements:
+      title: Требования
+      telegram:
+        title: Требования
+        valid: ОК
+        description: Описание
+        no: Нет
+        yes: Да
+        rails_env: "Убедитесь, что ваш RAILS_ENV — production (сейчас: %{rails_env})"
+        redmine_host: "Убедитесь, что установлен правильный хост в настройках Redmine (сейчас: %{host})"
+        tdlib_installation: "Необходимо поместить libtdjson в директорию redmine_root/vendor или добавить в ldconfig. <a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>Инструкции по сборке</a>."
+    telegram:
+      bot:
+        start:
+          instruction_html: |
+            Чтобы связать аккаунты Redmine и Telegram, пожалуйста, введите команду /connect.
+          hello: Здравствуйте!
+        connect:
+          already_connected: Ваши аккаунты уже связаны
+          wait_for_email: Мы отправили подтверждение на адрес "%{email}". Пожалуйста, следуйте инструкциям из письма.
+          wrong_email: Неверный email-адрес. Пользователь с таким адресом не найден. Осталось %{attempts} попытки, после чего аккаунт будет заблокирован на час.
+          blocked: Ваш аккаунт заблокирован. Попробуйте через %{unblock} мин.
+          login_link: "Для привязки аккаунта к Redmine проследуйте по ссылке: %{link}"
+        group:
+          no_commands: "Нет команд для группового чата. В приватном чате доступны следующие команды:"
+          private_command: 'Данная команда обрабатывается в личных сообщениях.'
+        private:
+          group_command: 'Данная команда обрабатывается в групповых чатах.'
+          help:
+            start: "Начало работы с ботом"
+            connect: "Связывание аккаунтов Redmine и Telegram"
+            help: "Справка по командам"
+        login:
+          success: Аутентификация прошла успешно
+          errors:
+            not_logged: Вы не залогинены в Redmine
+            hash_invalid: Неверный Hash
+            hash_outdated: Истекло время ожидания
+            wrong_account: Неверный аккаунт Telegram
+            not_persisted: Не удалось сохранить данные о Telegram-аккаунте
+

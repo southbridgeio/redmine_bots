@@ -1,8 +1,67 @@
 en:
   redmine_bots:
+    label:
+      slack: Slack
+      telegram: Telegram
     settings:
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token
       slack_client_id: Client ID
       slack_client_secret: Client Secret
       slack_verification_token: Verification Token
+      telegram:
+        phone_number: "Phone Number"
+        phone_number_hint: "Format: 78005553535"
+        phone_code: "Telegram code"
+        authorize_button_code: "Receive code"
+        authorize_button: "Authorize"
+        authorize_client: "Authorize Telegram client"
+        authorize_hint: "To authorize Telegram, press the button below. Current authorization will be drop."
+        plugin_link: "Back to the plugin settings"
+        auth_step_1: "Receiving Telegram code"
+        auth_step_2: "Authorization"
+        reset: "Reset cache and authorization"
+        bot_init: Initialize bot
+        bot_deinit: Deinitialize bot
+        get_updates_hint: bundle exec rake telegram_common:bot
+        web_hooks_warning: Need https to setup WebHooks
+    requirements:
+      title: Requirements
+      telegram:
+        valid: Valid
+        description: Description
+        no: No
+        yes: Yes
+        rails_env: "Make sure your RAILS_ENV is production (current: %{rails_env})"
+        redmine_host: "Make sure that you have correct host name in Redmine settings (current: %{host})"
+        tdlib_installation: "You should place libtdjson in redmine_root/vendor or add it to ldconfig. <a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>Build instructions</a>."
+    telegram:
+      bot:
+        start:
+          instruction_html: |
+            Now we need to connect your Redmine & Telegram accounts.
+            Please, use /connect command for it.
+          hello: Hello!
+        connect:
+          already_connected: Your accounts already connected
+          wait_for_email: We sent email to address "%{email}". Please follow instructions from it.
+          wrong_email: Wrong email. User with this email not found. Left %{attempts} attempts before the account will locked for an hour.
+          blocked: Your account was blocked. Try after %{unblock} minutes.
+          login_link: "Use this link to connect account to Redmine: %{link}"
+        group:
+          no_commands: "No commands for a group chat. Private chat commands:"
+          private_command: 'This command is for private chat.'
+        private:
+          group_command: 'This command is for group chat.'
+          help:
+            start: "Start work with bot"
+            connect: "Connect Redmine and Telegram account"
+            help: "Help about commands"
+        login:
+          success: Authentication succeed
+          errors:
+            not_logged: You're not logged in
+            hash_invalid: Hash is invalid
+            hash_outdated: Request is outdated
+            wrong_account: Wrong Telegram account
+            not_persisted: Failed to persist Telegram account data
