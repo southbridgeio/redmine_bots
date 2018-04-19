@@ -18,12 +18,20 @@ module RedmineBots::Slack::Commands
         ->(client, data, match) { new(client, data, match).call }
       end
 
+      def responds_to(*names)
+        define_singleton_method(:names) { names.map(&:to_s) }
+      end
+
+      def described_as(text)
+        define_singleton_method(:description) { text }
+      end
+
       def private_only
-        define_method(:private_only?) { true }
+        define_singleton_method(:private_only?) { true }
       end
 
       def group_only
-        define_method(:group_only?) { true }
+        define_singleton_method(:group_only?) { true }
       end
 
       def private_only?
@@ -32,6 +40,18 @@ module RedmineBots::Slack::Commands
 
       def group_only?
         false
+      end
+
+      def private?
+        !group_only?
+      end
+
+      def group?
+        !private_only?
+      end
+
+      def description
+        I18n.t("redmine_bots.slack.commands.#{name.demodulize.underscore}")
       end
     end
 
