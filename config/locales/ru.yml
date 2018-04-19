@@ -65,4 +65,8 @@ ru:
             hash_outdated: Истекло время ожидания
             wrong_account: Неверный аккаунт Telegram
             not_persisted: Не удалось сохранить данные о Telegram-аккаунте
+    slack:
+      commands:
+        connect: связывание аккаунтов Slack и Redmine
+        help: помощь по командам
 

@@ -65,3 +65,7 @@ en:
             hash_outdated: Request is outdated
             wrong_account: Wrong Telegram account
             not_persisted: Failed to persist Telegram account data
+    slack:
+      commands:
+        connect: connect Slack account with Redmine
+        help: help information about commands
