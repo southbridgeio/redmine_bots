@@ -88,7 +88,7 @@ module RedmineBots::Slack::Commands
     end
 
     def channel
-      channel ||= client.web_client.conversations_info(channel: data.channel).channel
+      @channel ||= client.web_client.conversations_info(channel: data.channel).channel
     end
 
     def private?
@@ -96,7 +96,7 @@ module RedmineBots::Slack::Commands
     end
 
     def group?
-      !channel.is_im
+      !private?
     end
 
     def private_only?

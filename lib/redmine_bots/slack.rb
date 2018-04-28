@@ -3,7 +3,15 @@ module RedmineBots::Slack
     false
   end
 
-  def self.web_client
+  def self.client
+    ::Slack::Web::Client.new
+  end
+
+  def self.robot_client
     ::Slack::Web::Client.new(token: Setting.plugin_redmine_bots['slack_oauth_token'])
+  end
+
+  def self.bot_client
+    ::Slack::Web::Client.new(token: Setting.plugin_redmine_bots['slack_bot_oauth_token'])
   end
 end
