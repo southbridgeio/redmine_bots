@@ -26,7 +26,7 @@ class RedmineTelegramSetupController < ApplicationController
 
   def reset
     save_phone_settings(phone_number: nil)
-    FileUtils.rm_rf(Rails.root.join('tmp', 'redmine_telegram_common', 'tdlib'))
+    FileUtils.rm_rf(Rails.root.join('tmp', 'redmine_bots', 'tdlib'))
     redirect_to plugin_settings_path('redmine_bots')
   end
 
