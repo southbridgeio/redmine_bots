@@ -41,18 +41,22 @@ namespace :redmine_bots do
     class TelegramCommonAccount < ActiveRecord::Base
     end
 
-    TelegramCommonAccount.all.each do |old_account|
-      next if TelegramAccount.find_by(telegram_id: old_account.telegram_id)
-      TelegramAccount.create!(old_account.slice(:telegram_id, :user_id, :username, :first_name, :last_name))
+    TelegramAccount.transaction do
+      TelegramCommonAccount.all.each do |old_account|
+        next if TelegramAccount.find_by(telegram_id: old_account.telegram_id)
+        TelegramAccount.create!(old_account.slice(:telegram_id, :user_id, :username, :first_name, :last_name))
+      end
+
+      telegram_common_settings = Setting.find_by_name(:plugin_redmine_telegram_common)
+      p telegram_common_settings['bot_token']
+
+      settings = Setting.find_or_initialize_by(name: 'plugin_redmine_bots')
+
+      settings.value = settings.value.to_h.merge(%w[bot_token api_id api_hash].map { |name| { "telegram_#{name}" => YAML.load(telegram_common_settings[:value])[name] } }.reduce(:merge))
+      settings.save!
+      puts 'Successfully transfered accounts and settings'
+
+      FileUtils.copy_entry(Rails.root.join('tmp', 'redmine_telegram_common', 'tdlib'), Rails.root.join('tmp', 'redmine_bots', 'tdlib'))
     end
-
-    telegram_common_settings = Setting.find_by_name(:plugin_redmine_telegram_common)
-    p telegram_common_settings['bot_token']
-
-    settings = Setting.find_or_initialize_by(name: 'plugin_redmine_bots')
-
-    settings.value = settings.value.to_h.merge(%w[bot_token api_id api_hash].map { |name| { "telegram_#{name}" => YAML.load(telegram_common_settings[:value])[name] } }.reduce(:merge))
-    settings.save!
-    puts 'Successfully transfered accounts and settings'
   end
 end
