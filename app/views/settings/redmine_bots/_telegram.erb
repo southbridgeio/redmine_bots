@@ -53,6 +53,37 @@
 
 <hr>
 
+<h3>Tdlib proxy (SOCKS5)</h3>
+
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.tdlib_use_proxy' %>
+  </label>
+  <%= check_box_tag 'settings[tdlib_use_proxy]', '1', @settings['tdlib_use_proxy'] %>
+</p>
+
+<p>
+  <label for="settings_telegram_proxy_server">Server</label>
+  <%= text_field_tag 'settings[tdlib_proxy_server]', @settings['tdlib_proxy_server'], size: 50 %>
+</p>
+
+<p>
+  <label for="settings_telegram_proxy_port">Proxy port</label>
+  <%= text_field_tag 'settings[tdlib_proxy_port]', @settings['tdlib_proxy_port'], size: 50 %>
+</p>
+
+<p>
+  <label for="settings_telegram_proxy_user">Proxy user</label>
+  <%= text_field_tag 'settings[tdlib_proxy_user]', @settings['tdlib_proxy_user'], size: 50 %>
+</p>
+
+<p>
+  <label for="settings_telegram_proxy_password">Proxy password</label>
+  <%= text_field_tag 'settings[tdlib_proxy_password]', @settings['tdlib_proxy_password'], size: 50 %>
+</p>
+
+<hr>
+
 <div style="display: flex; align-items: center;">
   <div style="flex: 1; padding: 0.5em;">
     <h3>WebHooks</h3>

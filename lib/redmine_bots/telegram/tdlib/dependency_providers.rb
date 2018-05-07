@@ -10,7 +10,14 @@ module RedmineBots::Telegram::Tdlib
           database_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'db').to_s,
           files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
         }
-        TD::Client.new(config)
+        proxy = {
+            '@type' => 'proxySocks5',
+            'server' => settings['tdlib_proxy_server'],
+            'port' => settings['tdlib_proxy_port'],
+            'username' => settings['tdlib_proxy_user'],
+            'password' => settings['tdlib_proxy_password']
+        }
+        TD::Client.new(**(settings['tdlib_use_proxy'] ? { proxy: proxy } : {}), **config)
       end
     end
 
