@@ -25,7 +25,7 @@ ru:
         bot_deinit: Деинициализировать бота
         get_updates_hint: bundle exec rake telegram_common:bot
         web_hooks_warning: Нужен https протокол, чтобы настроить WebHooks
-        tdlib_use_proxy: Использовать прокси
+        use_proxy: Использовать прокси
     requirements:
       title: Требования
       telegram:

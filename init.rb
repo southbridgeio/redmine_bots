@@ -2,6 +2,18 @@ log_dir = Rails.root.join('log/redmine_bots')
 
 FileUtils.mkdir_p(log_dir) unless Dir.exist?(log_dir)
 
+require 'telegram/bot'
+
+# Rails 5.1/Rails 4
+reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
+reloader.to_prepare do
+  Faraday::Adapter.register_middleware redmine_bots: RedmineBots::Telegram::Bot::FaradayAdapter
+
+  Telegram::Bot.configure do |config|
+    config.adapter = :redmine_bots
+  end
+end
+
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/centosadmin/redmine_bots'

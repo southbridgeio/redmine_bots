@@ -48,15 +48,15 @@ namespace :redmine_bots do
       end
 
       telegram_common_settings = Setting.find_by_name(:plugin_redmine_telegram_common)
-      p telegram_common_settings['bot_token']
 
       settings = Setting.find_or_initialize_by(name: 'plugin_redmine_bots')
 
       settings.value = settings.value.to_h.merge(%w[bot_token api_id api_hash].map { |name| { "telegram_#{name}" => YAML.load(telegram_common_settings[:value])[name] } }.reduce(:merge))
       settings.save!
-      puts 'Successfully transfered accounts and settings'
 
       FileUtils.copy_entry(Rails.root.join('tmp', 'redmine_telegram_common', 'tdlib'), Rails.root.join('tmp', 'redmine_bots', 'tdlib'))
+
+      puts 'Successfully transferred accounts and settings'
     end
   end
 end
