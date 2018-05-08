@@ -1,6 +1,8 @@
 log_dir = Rails.root.join('log/redmine_bots')
+tmp_dir = Rails.root.join('tmp/redmine_bots')
 
 FileUtils.mkdir_p(log_dir) unless Dir.exist?(log_dir)
+FileUtils.mkdir_p(tmp_dir) unless Dir.exist?(tmp_dir)
 
 require 'telegram/bot'
 
