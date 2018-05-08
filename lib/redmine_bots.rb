@@ -1,0 +1,2 @@
+module RedmineBots
+end
