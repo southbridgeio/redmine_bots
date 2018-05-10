@@ -4,6 +4,8 @@ module RedmineBots
       tries ||= 0
       tries += 1
 
+      I18n.locale = Setting['default_language']
+
       Process.daemon(true, true) if Rails.env.production?
       if ENV['PID_DIR']
         pid_dir = ENV['PID_DIR']
