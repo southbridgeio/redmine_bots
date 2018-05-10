@@ -5,6 +5,7 @@ module RedmineBots::Slack::Commands
         klass.prepend(
           Module.new do
             def call
+              I18n.locale = Setting['default_language']
               (not_authorized && return) unless authorized?
               (private_only && return) if private_only? && !private?
               (group_only && return) if group_only? && !group?
