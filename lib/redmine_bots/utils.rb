@@ -19,6 +19,11 @@ module RedmineBots
         abort
       end
 
+      Signal.trap('HUP') do
+        at_exit { logger.error 'Aborted with HUP signal' }
+        abort
+      end
+
       yield
 
     rescue PidFile::DuplicateProcessError => e
