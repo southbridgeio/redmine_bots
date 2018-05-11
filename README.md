@@ -96,6 +96,10 @@ In order to use Slack integrations you need to follow these steps:
 
 * Run bot with `bundle exec rake redmine_bots:slack`
 
+## Migration from redmine_telegram_common
+
+You can transparently migrate your old data (telegram accounts, settings and tdlib db/files) to new DB structure if you used *redmine_telegram_common* before with `bundle exec rake redmine_bots:migrate_from_telegram_common`.
+
 
 ## Author of the Plugin
 
