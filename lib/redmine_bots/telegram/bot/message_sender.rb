@@ -1,6 +1,20 @@
 module RedmineBots::Telegram
   class Bot
     class MessageSender
+      SLEEP_TIME = 30
+
+      class BotKickedError
+        def self.===(e)
+          e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?('kicked')
+        end
+      end
+
+      class FloodError
+        def self.===(e)
+          e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?('Too Many Requests')
+        end
+      end
+
       def self.call(params)
         new(params).call
       end
@@ -15,6 +29,7 @@ module RedmineBots::Telegram
       end
 
       def call
+        tries ||= 3
         message_params = {
           chat_id: chat_id,
           text: message,
@@ -25,6 +40,10 @@ module RedmineBots::Telegram
         bot.api.send_message(message_params)
       rescue BotKickedError
         logger.warn("Bot was kicked from chat. Chat Id: #{chat_id}, params: #{params.inspect}")
+      rescue FloodError => e
+        logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
+        sleep SLEEP_TIME
+        (tries -= 1).zero? ? raise(e) : retry
       end
 
       private
@@ -36,12 +55,6 @@ module RedmineBots::Telegram
       def logger
         @logger ||= Logger.new(Rails.root.join('log/telegram_common',
                                            'message-sender.log'))
-      end
-
-      class BotKickedError
-        def self.===(e)
-          e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?('kicked')
-        end
       end
     end
   end
