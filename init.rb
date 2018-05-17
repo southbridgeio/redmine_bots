@@ -9,6 +9,13 @@ require 'telegram/bot'
 # Rails 5.1/Rails 4
 reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
 reloader.to_prepare do
+  require_dependency 'redmine_bots/telegram'
+
+  paths = '/lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}.rb'
+
+  Dir.glob(File.dirname(__FILE__) + paths).each do |file|
+    require_dependency file
+  end
   Faraday::Adapter.register_middleware redmine_bots: RedmineBots::Telegram::Bot::FaradayAdapter
 
   Telegram::Bot.configure do |config|
@@ -16,7 +23,7 @@ reloader.to_prepare do
   end
 end
 
-Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers}")
+Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
 
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'

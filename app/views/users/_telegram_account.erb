@@ -1,0 +1,6 @@
+<% if account = TelegramAccount.find_by(user_id: user.id) %>
+  <h3>Telegram</h3>
+  <ul>
+    <li> ID: <%= account.telegram_id %> Username: <%= account.username %> Name: <%= account.first_name %> <%= account.last_name %>
+  </ul>
+<% end %>
