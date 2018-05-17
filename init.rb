@@ -16,6 +16,8 @@ reloader.to_prepare do
   end
 end
 
+Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers}")
+
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/centosadmin/redmine_bots'
