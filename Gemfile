@@ -14,4 +14,5 @@ group :test do
   gem 'database_cleaner', '1.5.1'
   gem 'minitest-around'
   gem 'minitest-reporters'
+  gem 'shoulda'
 end

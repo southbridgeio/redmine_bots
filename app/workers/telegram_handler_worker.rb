@@ -22,7 +22,7 @@ class TelegramHandlerWorker
   end
 
   def logger
-    @logger ||= Logger.new(Rails.root.join('log/telegram_common',
+    @logger ||= Logger.new(Rails.root.join('log/redmine_bots',
                                            'telegram-handler.log'))
   end
 end
