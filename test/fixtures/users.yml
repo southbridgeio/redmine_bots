@@ -1,0 +1,11 @@
+logged:
+  id: 1
+  type: User
+
+anonymous:
+  id: 2
+  type: AnonymousUser
+
+user_3:
+  id: 3
+  type: User

@@ -1,0 +1,31 @@
+language: ruby
+rvm:
+  - 2.3.6
+  - 2.5.1
+
+branches:
+  only:
+    - master
+    - develop
+
+addons:
+  postgresql: "9.4"
+
+env:
+  - REDMINE_VER=3.4-stable
+
+install: "echo skip bundle install"
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+services:
+  - redis-server
+
+script:
+  - export TESTSPACE=`pwd`/testspace
+  - export NAME_OF_PLUGIN=redmine_bots
+  - export PATH_TO_PLUGIN=`pwd`
+  - export PATH_TO_REDMINE=$TESTSPACE/redmine
+  - mkdir $TESTSPACE
+  - cp test/support/* $TESTSPACE/
+  - bash -x ./travis.sh
