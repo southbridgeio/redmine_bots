@@ -104,7 +104,7 @@ module RedmineBots::Telegram
     end
 
     def default_logger
-      @logger ||= Logger.new(Rails.root.join('log/telegram_common', 'bot.log'))
+      @logger ||= Logger.new(Rails.root.join('log/redmine_bots', 'bot.log'))
     end
   end
 end
