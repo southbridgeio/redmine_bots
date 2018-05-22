@@ -10,7 +10,14 @@ module RedmineBots::Telegram
         logger.debug 'RedmineBots::Telegram::Bot#connect'
         logger.debug "message_text: #{message_text}"
         logger.debug "redmine_user: #{redmine_user.inspect}"
-
+        
+        if  message_text.sub("/connect", '') == 'token'
+          token = Jwt.encode(telegram_id: chat_id)
+          send_message("Please, follow link: #{Setting.protocol}://#{Setting.host_name}/telegram/check_jwt?token=#{token}")
+          return
+        end
+        
+        
         if redmine_user.present?
           message = I18n.t('redmine_bots.telegram.bot.connect.already_connected')
         else
