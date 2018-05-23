@@ -107,6 +107,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
           /start - #{I18n.t('redmine_bots.telegram.bot.private.help.start')}
           /connect - #{I18n.t('redmine_bots.telegram.bot.private.help.connect')}
           /help - #{I18n.t('redmine_bots.telegram.bot.private.help.help')}
+          /token - #{I18n.t('redmine_bots.telegram.bot.private.help.token')}
         TEXT
 
         message = text.chomp
