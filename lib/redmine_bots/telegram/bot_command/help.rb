@@ -9,7 +9,7 @@ module RedmineBots::Telegram
       private
 
       def private_commands
-        %w(start connect help)
+        %w(start connect help token)
       end
 
       def group_commands

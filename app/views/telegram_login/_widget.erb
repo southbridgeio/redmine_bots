@@ -1,3 +1,12 @@
 <script async src="https://telegram.org/js/telegram-widget.js?4" data-telegram-login="<%= Setting.plugin_redmine_bots['telegram_bot_name'] %>" data-size="large" data-auth-url="<%= Setting.protocol %>://<%= Setting.host_name %>/telegram/check_auth?<%= params.slice(:autologin, :back_url).to_query %>" data-request-access="write"></script>
+<% current_user = @user || User.current %>
 
-Please, write /connect jwt to bot if you don't see the widget
+<br>
+
+<% if current_user.logged? && current_user.telegram_account.present? %>
+  <%= link_to send_telegram_sign_in_link_path, method: :post, remote: true do %>
+    <%= t('redmine_bots.telegram.bot.login.send_to_telegram') %>
+  <% end %> (<%= t('redmine_bots.telegram.bot.login.widget_not_visible') %>)
+<% else %>
+  <%= t('redmine_bots.telegram.bot.login.write_to_bot', bot: Setting.plugin_redmine_bots['telegram_bot_name']) %>
+<% end %>

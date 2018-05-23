@@ -21,4 +21,6 @@ scope :telegram do
 
   get 'login' => 'telegram_login#index', as: 'telegram_login'
   get 'check_auth' => 'telegram_login#check_auth'
+  get 'check_jwt' => 'telegram_login#check_jwt'
+  post 'send_sign_in_link' => 'telegram_login#send_sign_in_link', as: 'send_telegram_sign_in_link'
 end

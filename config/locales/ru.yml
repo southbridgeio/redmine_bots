@@ -58,6 +58,7 @@ ru:
             start: "Начало работы с ботом"
             connect: "Связывание аккаунтов Redmine и Telegram"
             help: "Справка по командам"
+            token: Получить ссылку для аутентификации
         login:
           success: Аутентификация прошла успешно
           errors:
@@ -66,6 +67,10 @@ ru:
             hash_outdated: Истекло время ожидания
             wrong_account: Неверный аккаунт Telegram
             not_persisted: Не удалось сохранить данные о Telegram-аккаунте
+            invalid_token: Неверный token
+          send_to_telegram: Отправить ссылку в Telegram
+          widget_not_visible: если виджет недоступен
+          write_to_bot: "Пожалуйста, напишите команду /token боту @%{bot}, если не видно виджет"
     slack:
       commands:
         connect: связывание аккаунтов Slack и Redmine

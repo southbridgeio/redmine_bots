@@ -3,16 +3,12 @@ module RedmineBots::Telegram
     extend self
 
     def encode(payload)
-      JWT.encode(**payload, iss: issuer)
+      exp = Time.now.to_i + 300
+      JWT.encode({ **payload, iss: issuer, exp: exp }, secret)
     end
 
     def decode_token(token)
       JWT.decode(token, secret, true, algorithm: 'HS256', iss: issuer, verify_iss: true)
-    end
-
-    def authenticate(user, token)
-      payload, header = decode_token(token)
-      payload['user_id'] == user.id && user.logged?
     end
 
     private
