@@ -68,7 +68,7 @@ ru:
             wrong_account: Неверный аккаунт Telegram
             not_persisted: Не удалось сохранить данные о Telegram-аккаунте
             invalid_token: Неверный token
-          follow_link: Please, follow link
+          follow_link: Пожалуйста, проследуйте по ссылке
           send_to_telegram: Отправить ссылку в Telegram
           widget_not_visible: если виджет недоступен
           write_to_bot: "Пожалуйста, напишите команду /token боту @%{bot}, если не видно виджет"
