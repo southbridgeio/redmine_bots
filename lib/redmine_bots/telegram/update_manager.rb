@@ -1,5 +1,5 @@
 class RedmineBots::Telegram::UpdateManager
-  COMMON_COMMANDS = %w[help start connect]
+  COMMON_COMMANDS = %w[help start connect token]
 
   def initialize
     @handlers = []

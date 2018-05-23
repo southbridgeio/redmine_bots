@@ -58,6 +58,7 @@ en:
             start: "Start work with bot"
             connect: "Connect Redmine and Telegram account"
             help: "Help about commands"
+            token: Get auth link
         login:
           success: Authentication succeed
           errors:
@@ -66,6 +67,10 @@ en:
             hash_outdated: Request is outdated
             wrong_account: Wrong Telegram account
             not_persisted: Failed to persist Telegram account data
+            invalid_token: Token is invalid
+          send_to_telegram: Send auth link to Telegram
+          widget_not_visible: if widget isn not visible
+          write_to_bot: "Please, write command /token to bot @%{bot} if widget is not visible"
     slack:
       commands:
         connect: connect Slack account with Redmine

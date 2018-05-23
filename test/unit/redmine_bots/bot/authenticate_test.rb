@@ -1,7 +1,7 @@
 require File.expand_path('../../../../test_helper', __FILE__)
 
 class RedmineBots::Telegram::Bot::AuthenticateTest < ActiveSupport::TestCase
-  fixtures :telegram_common_accounts, :users
+  fixtures :telegram_accounts, :users
 
   let(:described_class) { RedmineBots::Telegram::Bot::Authenticate }
 
