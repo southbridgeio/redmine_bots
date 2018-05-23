@@ -28,7 +28,7 @@ class TelegramLoginController < AccountController
     token = encode(telegram_id: user.telegram_account.telegram_id)
     message_params = {
         chat_id: user.telegram_account.telegram_id,
-        message: "Please, follow link: #{Setting.protocol}://#{Setting.host_name}/telegram/check_jwt?token=#{token}",
+        message: "#{I18n.t('redmine_bots.telegram.bot.login.follow_link')}: #{Setting.protocol}://#{Setting.host_name}/telegram/check_jwt?token=#{token}",
         bot_token: RedmineBots::Telegram.bot_token
     }
 

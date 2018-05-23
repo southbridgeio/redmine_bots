@@ -68,6 +68,7 @@ en:
             wrong_account: Wrong Telegram account
             not_persisted: Failed to persist Telegram account data
             invalid_token: Token is invalid
+          follow_link: Please, follow link
           send_to_telegram: Send auth link to Telegram
           widget_not_visible: if widget isn not visible
           write_to_bot: "Please, write command /token to bot @%{bot} if widget is not visible"
