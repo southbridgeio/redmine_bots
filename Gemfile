@@ -8,6 +8,8 @@ gem 'slack-ruby-bot'
 gem 'celluloid-io'
 gem 'tdlib-ruby', '~> 0.9'
 gem 'jwt'
+gem 'filelock'
+gem 'lazy_object', '~> 0.0.2'
 
 group :test do
   gem 'timecop'
