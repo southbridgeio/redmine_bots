@@ -3,12 +3,12 @@ module RedmineBots
     class Bot::Authenticate
       AUTH_TIMEOUT = 60.minutes
 
-      def self.call(user, auth_data)
-        new(user, auth_data).call
+      def self.call(user, auth_data, context:)
+        new(user, auth_data, context: context).call
       end
 
-      def initialize(user, auth_data)
-        @user, @auth_data = user, Hash[auth_data.sort_by { |k, _| k }]
+      def initialize(user, auth_data, context:)
+        @user, @auth_data, @context = user, Hash[auth_data.sort_by { |k, _| k }], context
       end
 
       def call
@@ -16,28 +16,17 @@ module RedmineBots
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.hash_invalid')) unless hash_valid?
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.hash_outdated')) unless up_to_date?
 
-        telegram_account = TelegramAccount.find_by(user_id: @user.id)
-
-        if telegram_account.present?
-          if telegram_account.telegram_id
-            unless @auth_data['id'].to_i == telegram_account.telegram_id
-              return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account'))
-            end
-          else
-            telegram_account.telegram_id = @auth_data['id']
-          end
+        case @context
+        when '2fa_connection'
+          telegram_account = prepare_telegram_account(model_class: Redmine2FA::TelegramConnection)
+          return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
+        when 'account_connection'
+          telegram_account = prepare_telegram_account(model_class: TelegramAccount)
+          return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
+          telegram_account.assign_attributes(@auth_data.slice('first_name', 'last_name', 'username'))
         else
-          telegram_account = TelegramAccount.find_or_initialize_by(telegram_id: @auth_data['id'])
-          if telegram_account.user_id
-            unless telegram_account.user_id == @user.id
-              return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account'))
-            end
-          else
-            telegram_account.user_id = @user.id
-          end
+          return failure('Invalid context')
         end
-
-        telegram_account.assign_attributes(@auth_data.slice('first_name', 'last_name', 'username'))
 
         if telegram_account.save
           success(telegram_account)
@@ -47,6 +36,30 @@ module RedmineBots
       end
 
       private
+
+      def prepare_telegram_account(model_class:)
+        telegram_account = model_class.find_by(user_id: @user.id)
+
+        if telegram_account.present?
+          if telegram_account.telegram_id
+            unless @auth_data['id'].to_i == telegram_account.telegram_id
+              return nil
+            end
+          else
+            telegram_account.telegram_id = @auth_data['id']
+          end
+        else
+          telegram_account = model_class.find_or_initialize_by(telegram_id: @auth_data['id'])
+          if telegram_account.user_id
+            unless telegram_account.user_id == @user.id
+              return nil
+            end
+          else
+            telegram_account.user_id = @user.id
+          end
+        end
+        telegram_account
+      end
 
       def hash_valid?
         Utils.auth_hash(@auth_data) == @auth_data['hash']
