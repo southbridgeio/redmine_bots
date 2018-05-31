@@ -1,5 +1,7 @@
 module RedmineBots
   class Telegram::Bot::SendSignInLink
+    include RedmineBots::Telegram::Jwt
+
     def self.call(user, context:)
       new(user, context: context).call
     end
@@ -10,7 +12,7 @@ module RedmineBots
 
     def call
       telegram_account =
-          case context
+          case @context
           when '2fa_connection'
             @user.telegram_account
           when 'account_connection'

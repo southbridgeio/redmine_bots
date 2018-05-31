@@ -19,8 +19,10 @@ module RedmineBots
         case @context
         when '2fa_connection'
           telegram_account = prepare_telegram_account(model_class: Redmine2FA::TelegramConnection)
+          return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
         when 'account_connection'
           telegram_account = prepare_telegram_account(model_class: TelegramAccount)
+          return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
           telegram_account.assign_attributes(@auth_data.slice('first_name', 'last_name', 'username'))
         else
           return failure('Invalid context')
@@ -41,7 +43,7 @@ module RedmineBots
         if telegram_account.present?
           if telegram_account.telegram_id
             unless @auth_data['id'].to_i == telegram_account.telegram_id
-              return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account'))
+              return nil
             end
           else
             telegram_account.telegram_id = @auth_data['id']
@@ -50,7 +52,7 @@ module RedmineBots
           telegram_account = model_class.find_or_initialize_by(telegram_id: @auth_data['id'])
           if telegram_account.user_id
             unless telegram_account.user_id == @user.id
-              return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account'))
+              return nil
             end
           else
             telegram_account.user_id = @user.id
