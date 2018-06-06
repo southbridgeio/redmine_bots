@@ -11,7 +11,7 @@
 <br>
 
 <% if current_user.logged? && telegram_account.present? %>
-  <%= link_to send_telegram_sign_in_link_path, method: :post, remote: true do %>
+  <%= link_to send_telegram_sign_in_link_path(params.slice(:autologin, :back_url)), method: :post, remote: true do %>
     <%= t('redmine_bots.telegram.bot.login.send_to_telegram') %>
   <% end %> (<%= t('redmine_bots.telegram.bot.login.widget_not_visible') %>)
 <% else %>
