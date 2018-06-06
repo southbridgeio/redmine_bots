@@ -11,7 +11,7 @@ class TelegramLoginController < AccountController
 
   def send_sign_in_link
     user = session[:otp_user_id] ? User.find(session[:otp_user_id]) : User.current
-    RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context)
+    RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context, params: params.slice(:autologin, :back_url))
   end
 
   def check_jwt
