@@ -19,7 +19,7 @@ class RedmineTelegramSetupController < ApplicationController
       authenticate.(params)
       save_phone_settings(phone_number: params['phone_number'])
       redirect_to plugin_settings_path('redmine_bots'), notice: t('telegram_common.client.authorize.success')
-    rescue RedmineBots::Telegram::TdlibAuthenticate::AuthenticationError => e
+    rescue RedmineBots::Telegram::Tdlib::Authenticate::AuthenticationError => e
       redirect_to plugin_settings_path('redmine_bots'), alert: e.message
     end
   end
