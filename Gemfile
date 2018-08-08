@@ -17,5 +17,5 @@ group :test do
   gem 'database_cleaner', '1.5.1'
   gem 'minitest-around'
   gem 'minitest-reporters', '<= 1.3.0'
-  gem 'shoulda'
+  gem 'shoulda', '<= 3.5.0'
 end
