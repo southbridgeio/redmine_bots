@@ -57,7 +57,7 @@ module RedmineBots::Telegram::Tdlib
         '@type' => 'setAuthenticationPhoneNumber',
         'phone_number' => phone
       }
-      @client.broadcast_and_receive(params).tap(&error_handler)
+      @client.fetch(params).tap(&error_handler)
     end
 
     def check_code(code)
@@ -65,7 +65,7 @@ module RedmineBots::Telegram::Tdlib
         '@type' => 'checkAuthenticationCode',
         'code' => code
       }
-      @client.broadcast_and_receive(params).tap(&error_handler)
+      @client.fetch(params).tap(&error_handler)
     end
 
     def error_handler
