@@ -16,6 +16,6 @@ group :test do
   gem 'spy'
   gem 'database_cleaner', '1.5.1'
   gem 'minitest-around'
-  gem 'minitest-reporters'
+  gem 'minitest-reporters', '<= 1.3.0'
   gem 'shoulda'
 end
