@@ -10,15 +10,15 @@ module RedmineBots::Telegram::Tdlib
 
     module Callable
       def call(*)
-        begin
-          tries ||= 3
+        tries ||= 3
+        Filelock Rails.root.join('tmp', 'redmine_bots', 'tdlib_lock'), wait: 10 do
           super
-        rescue Timeout::Error
-          sleep 2
-          retry unless (tries -= 1).zero?
-        ensure
-          @client.close
         end
+      rescue Timeout::Error
+        sleep 2
+        retry unless (tries -= 1).zero?
+      ensure
+        @client.close
       end
     end
   end

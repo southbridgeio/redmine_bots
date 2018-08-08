@@ -5,6 +5,7 @@ module RedmineBots::Telegram
     include BotCommand::Start
     include BotCommand::Connect
     include BotCommand::Help
+    include BotCommand::Token
 
     attr_reader :bot_token, :logger, :command
 
