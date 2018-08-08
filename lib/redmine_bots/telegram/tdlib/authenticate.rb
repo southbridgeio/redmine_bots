@@ -46,7 +46,6 @@ module RedmineBots::Telegram::Tdlib
 
       loop do
         chat_ids = @client.fetch('@type' => 'getChats', 'offset_order' => offset_order, 'offset_chat_id' => offset_chat_id, 'limit' => limit).tap(&error_handler)['chat_ids']
-        p chat_ids
         break if chat_ids.empty?
         last_chat = @client.fetch('@type' => 'getChat', 'chat_id' => chat_ids.last).tap(&error_handler)
         offset_chat_id, offset_order = last_chat.values_at('id', 'order')
