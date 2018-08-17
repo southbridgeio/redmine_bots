@@ -5,8 +5,8 @@ module RedmineBots
         new(*args).call
       end
 
-      def initialize(user, token, context:)
-        @user, @token, @context = user, token, context
+      def initialize(user, token, context:, sign_in_message_id:)
+        @user, @token, @context, @sign_in_message_id = user, token, context, sign_in_message_id
       end
 
       def call
@@ -24,6 +24,7 @@ module RedmineBots
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
 
         if telegram_account.save
+          update_sign_in_message(telegram_account)
           success(telegram_account)
         else
           failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted'))
@@ -31,6 +32,8 @@ module RedmineBots
       rescue JWT::DecodeError, JWT::ExpiredSignature, JWT::InvalidIssuerError, JWT::InvalidIatError
         failure(I18n.t('redmine_bots.telegram.bot.login.errors.invalid_token'))
       end
+
+      private
 
       def prepare_telegram_account(model_class:)
         telegram_data = Jwt.decode_token(@token).first
@@ -58,12 +61,24 @@ module RedmineBots
         telegram_account
       end
 
+      def update_sign_in_message(telegram_account)
+        bot.api.edit_message_text(chat_id: telegram_account.telegram_id,
+                                          message_id: @sign_in_message_id,
+                                          text: "✅ *#{I18n.t('redmine_bots.telegram.bot.login.success')}*",
+                                          parse_mode: 'Markdown',
+                                          reply_markup: ::Telegram::Bot::Types::InlineKeyboardMarkup.new({}))
+      end
+
       def success(value)
         Result.new(true, value)
       end
 
       def failure(value)
         Result.new(false, value)
+      end
+
+      def bot
+        @bot ||= ::Telegram::Bot::Client.new(RedmineBots::Telegram.bot_token)
       end
     end
   end

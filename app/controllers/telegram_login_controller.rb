@@ -11,12 +11,15 @@ class TelegramLoginController < AccountController
 
   def send_sign_in_link
     user = session[:otp_user_id] ? User.find(session[:otp_user_id]) : User.current
-    RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context, params: params.slice(:autologin, :back_url))
+    message = RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context, params: params.slice(:autologin, :back_url))
+    session[:sign_in_message_id] = message.dig('result', 'message_id')
   end
 
   def check_jwt
     user = User.find_by_id(session[:otp_user_id]) || User.current
-    auth = RedmineBots::Telegram::Bot::AuthenticateByToken.(user, params[:token], context: context)
+    auth = RedmineBots::Telegram::Bot::AuthenticateByToken.(user, params[:token],
+        context: context,
+        sign_in_message_id: session[:sign_in_message_id])
 
     handle_auth_result(auth, user)
   end
