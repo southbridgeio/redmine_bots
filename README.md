@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/centosadmin/redmine_bots.svg?branch=master)](https://travis-ci.org/centosadmin/redmine_bots)
 
+[![Rate at redmine.org](http://img.shields.io/badge/rate%20at-redmine.org-blue.svg?style=flat)](http://www.redmine.org/plugins/redmine_bots)
+
 # redmine_bots
 
 This plugin provides common stuff to build redmine plugins that involve Slack/Telegram API usage.
