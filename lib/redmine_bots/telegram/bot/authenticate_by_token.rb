@@ -24,7 +24,7 @@ module RedmineBots
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
 
         if telegram_account.save
-          update_sign_in_message(telegram_account)
+          ::RedmineBots::Telegram::Bot::UpdateSignInMessage.(telegram_account, @sign_in_message_id)
           success(telegram_account)
         else
           failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted'))
@@ -59,14 +59,6 @@ module RedmineBots
           end
         end
         telegram_account
-      end
-
-      def update_sign_in_message(telegram_account)
-        bot.api.edit_message_text(chat_id: telegram_account.telegram_id,
-                                          message_id: @sign_in_message_id,
-                                          text: "✅ *#{I18n.t('redmine_bots.telegram.bot.login.success')}*",
-                                          parse_mode: 'Markdown',
-                                          reply_markup: ::Telegram::Bot::Types::InlineKeyboardMarkup.new({}))
       end
 
       def success(value)
