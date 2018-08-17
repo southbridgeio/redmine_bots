@@ -4,7 +4,7 @@ module RedmineBots
       tries ||= 0
       tries += 1
 
-      Process.daemon(true, true) if Rails.env.production?
+      Process.daemon(true, false) if Rails.env.production?
       if ENV['PID_DIR']
         pid_dir = ENV['PID_DIR']
         PidFile.new(piddir: pid_dir, pidfile: "#{name}.pid")
