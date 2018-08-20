@@ -21,7 +21,7 @@ namespace :redmine_bots do
   # bundle exec rake telegram_common:bot PID_DIR='tmp/pids'
   desc "Runs telegram bot process (options: default PID_DIR='tmp/pids')"
   task telegram: :environment do
-    LOG = Rails.env.production? ? Logger.new(Rails.root.join('log/telegram_bots', 'bot.log')) : Logger.new(STDOUT)
+    LOG = Rails.env.production? ? Logger.new(Rails.root.join('log/redmine_bots', 'bot.log')) : Logger.new(STDOUT)
 
     RedmineBots::Utils.daemonize(:telegram_bot, logger: LOG) do
       bot = init_bot
