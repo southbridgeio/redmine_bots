@@ -16,8 +16,7 @@ module RedmineBots
         bot.api.edit_message_text(chat_id: @telegram_account.telegram_id,
                                   message_id: @message_id,
                                   text: "✅ *#{I18n.t('redmine_bots.telegram.bot.login.success')}*",
-                                  parse_mode: 'Markdown',
-                                  reply_markup: ::Telegram::Bot::Types::InlineKeyboardMarkup.new({}))
+                                  parse_mode: 'Markdown')
       end
     end
   end

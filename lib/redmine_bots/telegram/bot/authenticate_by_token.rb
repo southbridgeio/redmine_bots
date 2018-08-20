@@ -24,7 +24,7 @@ module RedmineBots
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
 
         if telegram_account.save
-          ::RedmineBots::Telegram::Bot::UpdateSignInMessage.(telegram_account, @sign_in_message_id)
+          ::RedmineBots::Telegram::Bot::UpdateSignInMessage.(telegram_account, @sign_in_message_id) if @sign_in_message_id
           success(telegram_account)
         else
           failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted'))
