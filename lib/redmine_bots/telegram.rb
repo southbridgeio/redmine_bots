@@ -16,10 +16,14 @@ module RedmineBots::Telegram
 
   def self.init_bot
     token = Setting.plugin_redmine_bots['telegram_bot_token']
-    self_info = get_me.call
+    self_info = {}
 
-    unless self_info['@type'] == 'user'
-      raise 'Please, set correct settings for plugin RedmineBots::Telegram'
+    if Setting.plugin_redmine_bots['telegram_phone_number']
+      self_info = get_me.call
+
+      unless self_info['@type'] == 'user'
+        raise 'Please, set correct settings for plugin RedmineBots::Telegram'
+      end
     end
 
     robot_id = self_info['id']
@@ -35,8 +39,6 @@ module RedmineBots::Telegram
       bot_info = bot.api.get_me['result']
       bot_name = bot_info['username']
     end
-
-    add_bot.(bot_info['id'])
 
     plugin_settings = Setting.find_by(name: 'plugin_redmine_bots')
 
