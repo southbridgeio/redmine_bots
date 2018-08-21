@@ -18,7 +18,7 @@ module RedmineBots::Telegram
     token = Setting.plugin_redmine_bots['telegram_bot_token']
     self_info = {}
 
-    if Setting.plugin_redmine_bots['telegram_phone_number']
+    if Setting.plugin_redmine_bots['telegram_phone_number'].present?
       self_info = get_me.call
 
       unless self_info['@type'] == 'user'
