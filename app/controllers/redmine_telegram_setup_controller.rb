@@ -1,8 +1,6 @@
 class RedmineTelegramSetupController < ApplicationController
   include RedmineBots::Telegram::Tdlib::DependencyProviders::Authenticate
 
-  unloadable
-
   def step_1
   end
 
