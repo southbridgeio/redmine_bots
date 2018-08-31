@@ -12,14 +12,14 @@ module RedmineBots
 
     def call
       telegram_account =
-          case @context
-          when '2fa_connection'
-            @user.telegram_account
-          when 'account_connection'
-            @user.telegram_connection
-          else
-            nil
-          end
+        case @context
+        when '2fa_connection'
+          @user.telegram_connection
+        when 'account_connection'
+          @user.telegram_account
+        else
+          nil
+        end
       return unless telegram_account
 
       token = encode(telegram_id: telegram_account.telegram_id)
