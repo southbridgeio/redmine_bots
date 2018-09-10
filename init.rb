@@ -43,4 +43,6 @@ Redmine::Plugin.register :redmine_bots do
     },
     partial: 'settings/redmine_bots'
   )
+
+  permission :view_telegram_account_info, {}
 end

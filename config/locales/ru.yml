@@ -1,4 +1,5 @@
 ru:
+  permission_view_telegram_account_info: Просмотр информации о профиле Telegram
   redmine_bots:
     label:
       slack: Slack
