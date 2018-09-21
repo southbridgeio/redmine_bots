@@ -10,6 +10,10 @@ module RedmineBots::Telegram
     Setting.find_by_name(:plugin_redmine_bots).value['telegram_bot_token']
   end
 
+  def self.webhook_secret
+    Digest::SHA256.hexdigest(Rails.application.secrets[:secret_key_base])
+  end
+
   def self.update_manager
     @update_manager ||= UpdateManager.new
   end

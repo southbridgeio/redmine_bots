@@ -14,7 +14,7 @@ scope :telegram do
   end
 
   scope :api do
-    post 'web_hook', to: TelegramWebhookController.action(:update), as: 'telegram_common_webhook'
+    post 'web_hook/:secret', to: TelegramWebhookController.action(:update), as: 'telegram_common_webhook'
     post 'bot_init' => 'redmine_telegram_setup#bot_init', as: 'telegram_bot_init'
     delete 'bot_deinit' => 'redmine_telegram_setup#bot_deinit', as: 'telegram_bot_deinit'
   end
