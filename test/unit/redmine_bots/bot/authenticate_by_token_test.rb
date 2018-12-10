@@ -9,7 +9,7 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
     RedmineBots::Telegram::Bot::UpdateSignInMessage.any_instance.stubs(:call)
   end
 
-  context 'when user is anonymous' do
+  describe 'when user is anonymous' do
     it 'returns failure result' do
       result = described_class.new(users(:anonymous), 'token', context: 'account_connection', sign_in_message_id: 1).call
 
@@ -18,7 +18,7 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
     end
   end
 
-  context 'when token is invalid' do
+  describe 'when token is invalid' do
     it 'returns failure result' do
       result = described_class.new(users(:logged), 'invalid_token', context: 'account_connection', sign_in_message_id: 1).call
 
@@ -27,8 +27,8 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
     end
   end
 
-  context 'when telegram account found by user_id' do
-    context 'when telegram ids do not match' do
+  describe 'when telegram account found by user_id' do
+    describe 'when telegram ids do not match' do
       it 'returns failure result' do
         RedmineBots::Telegram::Jwt.stubs(:decode_token).returns([{ 'telegram_id' => 2 }, {}])
 
@@ -39,7 +39,7 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
       end
     end
 
-    context 'when telegram ids match' do
+    describe 'when telegram ids match' do
       it 'updates attributes and returns successful result' do
         RedmineBots::Telegram::Jwt.stubs(:decode_token).returns([{ 'telegram_id' => 1 }, {}])
 
@@ -53,8 +53,8 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
     end
   end
 
-  context 'when telegram account not found by user_id' do
-    context 'when user ids do not match' do
+  describe 'when telegram account not found by user_id' do
+    describe 'when user ids do not match' do
       it 'returns failure result' do
         RedmineBots::Telegram::Jwt.stubs(:decode_token).returns([{ 'telegram_id' => 1 }, {}])
         result = described_class.new(users(:user_3), 'token', context: 'account_connection', sign_in_message_id: 1).call
@@ -64,7 +64,7 @@ class RedmineBots::Telegram::Bot::AuthenticateByTokenTest < ActiveSupport::TestC
       end
     end
 
-    context 'when telegram account does not have user_id' do
+    describe 'when telegram account does not have user_id' do
       setup do
         RedmineBots::Telegram::Bot::UpdateSignInMessage.expects(:call)
       end
