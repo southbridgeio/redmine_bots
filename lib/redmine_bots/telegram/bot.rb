@@ -28,7 +28,7 @@ module RedmineBots::Telegram
     private
 
     def initialize_command(command)
-      command.is_a?(::Telegram::Bot::Types::Message) ? command : ::Telegram::Bot::Types::Message.new(command)
+      command.is_a?(::Telegram::Bot::Types::Message) ? command : ::Telegram::Bot::Types::Message.new(command.to_unsafe_h)
     end
 
     def execute_command

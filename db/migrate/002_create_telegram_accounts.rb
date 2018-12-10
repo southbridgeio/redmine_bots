@@ -1,4 +1,4 @@
-class CreateTelegramAccounts < ActiveRecord::Migration
+class CreateTelegramAccounts < Rails.version < '5.0' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
   def change
     create_table :telegram_accounts do |t|
       t.integer :telegram_id, index: true

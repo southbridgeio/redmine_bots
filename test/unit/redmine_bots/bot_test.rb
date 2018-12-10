@@ -5,7 +5,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
 
   let(:bot_token) { 'token' }
 
-  context '/start' do
+  describe '/start' do
     setup do
       @telegram_message = ActionController::Parameters.new(
         from: { id:         123,
@@ -20,7 +20,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
       @bot_service = RedmineBots::Telegram::Bot.new(bot_token, @telegram_message)
     end
 
-    context 'without user' do
+    describe 'without user' do
       setup do
         RedmineBots::Telegram::Bot::MessageSender
             .expects(:call)
@@ -31,7 +31,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
             )
       end
 
-      should 'create telegram account' do
+      it 'create telegram account' do
         assert_difference('TelegramAccount.count') do
           @bot_service.call
         end
@@ -43,7 +43,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
         assert_equal 'Haselman', telegram_account.last_name
       end
 
-      should 'update telegram account' do
+      it 'update telegram account' do
         telegram_account = TelegramAccount.create(telegram_id: 123, username: 'test', first_name: 'f', last_name: 'l')
 
         assert_no_difference('TelegramAccount.count') do
@@ -58,7 +58,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
       end
     end
 
-    context 'group' do
+    describe 'group' do
       setup do
         @telegram_message = ActionController::Parameters.new(
           from: { id:         123,
@@ -73,7 +73,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
         @bot_service = RedmineBots::Telegram::Bot.new(bot_token, @telegram_message)
       end
 
-      should 'send message about private command' do
+      it 'send message about private command' do
         RedmineBots::Telegram::Bot::MessageSender
           .expects(:call)
           .with(
@@ -86,8 +86,8 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
     end
   end
 
-  context '/help' do
-    context 'private' do
+  describe '/help' do
+    describe 'private' do
       setup do
         @telegram_message = ActionController::Parameters.new(
           from: { id:         123,
@@ -102,7 +102,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
         @bot_service = RedmineBots::Telegram::Bot.new(bot_token, @telegram_message)
       end
 
-      should 'send help for private chat' do
+      it 'send help for private chat' do
         text = <<~TEXT
           /start - #{I18n.t('redmine_bots.telegram.bot.private.help.start')}
           /connect - #{I18n.t('redmine_bots.telegram.bot.private.help.connect')}
@@ -123,7 +123,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
       end
     end
 
-    context 'group' do
+    describe 'group' do
       setup do
         @telegram_message = ActionController::Parameters.new(
           from: { id:         123,
@@ -138,7 +138,7 @@ class RedmineBots::Telegram::BotTest < ActiveSupport::TestCase
         @bot_service = RedmineBots::Telegram::Bot.new(bot_token, @telegram_message)
       end
 
-      should 'send help for private chat' do
+      it 'send help for private chat' do
         text = <<~TEXT
           #{I18n.t('redmine_bots.telegram.bot.group.no_commands')}
           /start - #{I18n.t('redmine_bots.telegram.bot.private.help.start')}
