@@ -11,7 +11,7 @@ class TelegramLoginController < AccountController
 
   def send_sign_in_link
     user = session[:otp_user_id] ? User.find(session[:otp_user_id]) : User.current
-    message = RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context, params: params.slice(:autologin, :back_url))
+    message = RedmineBots::Telegram::Bot::SendSignInLink.(user, context: context, params: params.to_unsafe_h.slice(:autologin, :back_url))
     session[:sign_in_message_id] = message.dig('result', 'message_id') if message
     render plain: 'SUCCESS', status: :ok
   end
