@@ -8,7 +8,7 @@ module RedmineBots
       end
 
       def initialize(user, auth_data, context:)
-        @user, @auth_data, @context = user, Hash[auth_data.sort_by { |k, _| k }], context
+        @user, @auth_data, @context = user, Hash[auth_data.to_h.sort_by { |k, _| k }], context
       end
 
       def call
