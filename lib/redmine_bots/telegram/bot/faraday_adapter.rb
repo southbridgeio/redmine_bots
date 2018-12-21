@@ -11,7 +11,7 @@ module RedmineBots::Telegram
     private
 
     def fetch_proxy_from_settings
-      settings = Setting.plugin_redmine_bots
+      settings = Setting.find_by_name(:plugin_redmine_bots).value
       return unless settings['bot_use_proxy']
       {
           server: settings['bot_proxy_server'],
