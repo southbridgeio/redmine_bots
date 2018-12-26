@@ -23,7 +23,7 @@ en:
         reset: "Reset cache and authorization"
         bot_init: Initialize bot
         bot_deinit: Deinitialize bot
-        get_updates_hint: bundle exec rake telegram_common:bot
+        get_updates_hint: bundle exec rake redmine_bots:telegram
         web_hooks_warning: Need https to setup WebHooks
         use_proxy: Use proxy
     requirements:
