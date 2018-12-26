@@ -10,6 +10,10 @@ This plugin provides common stuff to build redmine plugins that involve Slack/Te
 * Ruby 2.3+
 * Redmine 3.4+
 
+### Upgrade from 0.1.0 to 0.2+
+
+Webhook URL is changed in 0.2.0 because of webhook secret. You need to reinitialize webhook from plugin settings page.
+
 ## Telegram
 
 Telegram support includes:
