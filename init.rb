@@ -29,7 +29,7 @@ Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/centosadmin/redmine_bots'
   description 'This is a platform for building Redmine bots'
-  version '0.1.0'
+  version '0.2.0'
   author 'Southbridge'
   author_url 'https://github.com/centosadmin'
 
@@ -43,4 +43,6 @@ Redmine::Plugin.register :redmine_bots do
     },
     partial: 'settings/redmine_bots'
   )
+
+  permission :view_telegram_account_info, {}
 end

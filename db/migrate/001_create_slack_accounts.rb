@@ -1,4 +1,4 @@
-class CreateSlackAccounts < ActiveRecord::Migration
+class CreateSlackAccounts < Rails.version < '5.0' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
   def change
     create_table :slack_accounts do |t|
       t.string :slack_id, index: true

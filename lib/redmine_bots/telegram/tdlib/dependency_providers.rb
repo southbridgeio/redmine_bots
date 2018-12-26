@@ -3,7 +3,7 @@ module RedmineBots::Telegram::Tdlib
     module Client
       def client
         LazyObject.new do
-          settings = Setting.plugin_redmine_bots
+          settings = Setting.find_by_name(:plugin_redmine_bots).value
           TD::Api.set_log_file_path(Rails.root.join('log', 'redmine_bots', 'tdlib.log').to_s)
           config = {
               api_id: settings['telegram_api_id'],

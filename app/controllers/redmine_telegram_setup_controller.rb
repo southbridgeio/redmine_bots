@@ -1,8 +1,6 @@
 class RedmineTelegramSetupController < ApplicationController
   include RedmineBots::Telegram::Tdlib::DependencyProviders::Authenticate
 
-  unloadable
-
   def step_1
   end
 
@@ -31,7 +29,7 @@ class RedmineTelegramSetupController < ApplicationController
   end
 
   def bot_init
-    web_hook_url = "https://#{Setting.host_name}/telegram/api/web_hook"
+    web_hook_url = "https://#{Setting.host_name}/telegram/api/web_hook/#{RedmineBots::Telegram.webhook_secret}"
 
     bot = RedmineBots::Telegram.init_bot
     bot.api.setWebhook(url: web_hook_url)
