@@ -34,17 +34,20 @@
 
 <p>
   <label for="settings_telegram_bot_token">Bot Token</label>
-  <%= text_field_tag 'settings[telegram_bot_token]', @settings['telegram_bot_token'], size: 50 %>
+  <%= text_field_tag 'settings[telegram_bot_token]', @settings['telegram_bot_token'], type: 'password', size: 50 %>
+  <a href="javascript:void(0);" toggle="#settings_telegram_bot_token" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
   <label for="settings_telegram_api_id">Api ID</label>
-  <%= text_field_tag 'settings[telegram_api_id]', @settings['telegram_api_id'], size: 50 %>
+  <%= text_field_tag 'settings[telegram_api_id]', @settings['telegram_api_id'], type: 'password', size: 50 %>
+  <a href="javascript:void(0);" toggle="#settings_telegram_api_id" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
   <label for="settings_telegram_api_hash">Api Hash</label>
-  <%= text_field_tag 'settings[telegram_api_hash]', @settings['telegram_api_hash'], size: 50 %>
+  <%= text_field_tag 'settings[telegram_api_hash]', @settings['telegram_api_hash'], type: 'password', size: 50 %>
+  <a href="javascript:void(0);" toggle="#settings_telegram_api_hash" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
@@ -79,7 +82,8 @@
 
 <p>
   <label for="settings_telegram_proxy_password">Proxy password</label>
-  <%= text_field_tag 'settings[tdlib_proxy_password]', @settings['tdlib_proxy_password'], size: 50 %>
+  <%= text_field_tag 'settings[tdlib_proxy_password]', @settings['tdlib_proxy_password'], size: 50, type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_tdlib_proxy_password" class="toggle-password">[Показать]</a>
 </p>
 
 <hr>
@@ -110,7 +114,8 @@
 
 <p>
   <label for="settings_telegram_proxy_password">Proxy password</label>
-  <%= text_field_tag 'settings[bot_proxy_password]', @settings['bot_proxy_password'], size: 50 %>
+  <%= text_field_tag 'settings[bot_proxy_password]', @settings['bot_proxy_password'], size: 50, type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_bot_proxy_password" class="toggle-password">[Показать]</a>
 </p>
 
 <hr>

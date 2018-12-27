@@ -9,26 +9,30 @@
   <label>
     <%= t 'redmine_bots.settings.slack_client_secret' %>
   </label>
-  <%= text_field_tag 'settings[slack_client_secret]', @settings['slack_client_secret'] %>
+  <%= text_field_tag 'settings[slack_client_secret]', @settings['slack_client_secret'], type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_slack_client_secret" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
   <label>
     <%= t 'redmine_bots.settings.slack_verification_token' %>
   </label>
-  <%= text_field_tag 'settings[slack_verification_token]', @settings['slack_verification_token'] %>
+  <%= text_field_tag 'settings[slack_verification_token]', @settings['slack_verification_token'], type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_slack_verification_token" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
   <label>
     <%= t 'redmine_bots.settings.slack_oauth_token' %>
   </label>
-  <%= text_field_tag 'settings[slack_oauth_token]', @settings['slack_oauth_token'] %>
+  <%= text_field_tag 'settings[slack_oauth_token]', @settings['slack_oauth_token'], type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_slack_oauth_token" class="toggle-password">[Показать]</a>
 </p>
 
 <p>
   <label>
     <%= t 'redmine_bots.settings.slack_bot_oauth_token' %>
   </label>
-  <%= text_field_tag 'settings[slack_bot_oauth_token]', @settings['slack_bot_oauth_token'] %>
+  <%= text_field_tag 'settings[slack_bot_oauth_token]', @settings['slack_bot_oauth_token'], type: 'password' %>
+  <a href="javascript:void(0);" toggle="#settings_slack_bot_oauth_token" class="toggle-password">[Показать]</a>
 </p>
