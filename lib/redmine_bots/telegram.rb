@@ -28,18 +28,7 @@ module RedmineBots::Telegram
         files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
     }
 
-    client = TD::Client.new(**config)
-
-    if settings['tdlib_use_proxy']
-      proxy = TD::Types::ProxyType::Socks5.new(username: settings['tdlib_proxy_user'],
-                                               password: settings['tdlib_proxy_password'])
-      client.add_proxy(settings['tdlib_proxy_server'],
-                       settings['tdlib_proxy_port'],
-                       proxy,
-                       true).flat_map { client.ready }
-    end
-
-    client
+    TD::Client.new(**config)
   end
 
   def self.init_bot

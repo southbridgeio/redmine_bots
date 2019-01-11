@@ -1,7 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class Authenticate < Command
     TIMEOUT = 20
-
+    Concurrent::Promises::FactoryMethods
     class AuthenticationError < StandardError
     end
 
@@ -36,15 +36,15 @@ module RedmineBots::Telegram::Tdlib
         end
       end
 
-      client.connect
-
-      Promise.execute do
-        mutex.synchronize do
-          condition.wait(mutex, TIMEOUT)
-          raise TD::ErrorProxy.new(error) if error
-          error = TD::Types::Error.new(code: 0, message: 'Unknown error. Please, see TDlib logs.') if result.nil?
-          raise TD::ErrorProxy.new(error) if error
-          result
+      connect.flat_map do
+        Promise.execute do
+          mutex.synchronize do
+            condition.wait(mutex, TIMEOUT)
+            raise TD::ErrorProxy.new(error) if error
+            error = TD::Types::Error.new(code: 0, message: 'Unknown error. Please, see TDlib logs.') if result.nil?
+            raise TD::ErrorProxy.new(error) if error
+            result
+          end
         end
       end
     end
