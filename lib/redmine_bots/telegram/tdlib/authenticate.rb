@@ -1,7 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class Authenticate < Command
     TIMEOUT = 20
-    Concurrent::Promises::FactoryMethods
+
     class AuthenticationError < StandardError
     end
 
@@ -12,7 +12,7 @@ module RedmineBots::Telegram::Tdlib
       result = nil
 
       client.on(Update::AuthorizationState) do |update|
-        promise = Promise.fulfill(true)
+        promise = Promises.fulfilled_future(true)
 
         case update.authorization_state
         when AuthorizationState::WaitPhoneNumber
@@ -36,8 +36,8 @@ module RedmineBots::Telegram::Tdlib
         end
       end
 
-      connect.flat_map do
-        Promise.execute do
+      connect.then do
+        Promises.future do
           mutex.synchronize do
             condition.wait(mutex, TIMEOUT)
             raise TD::ErrorProxy.new(error) if error
@@ -46,7 +46,7 @@ module RedmineBots::Telegram::Tdlib
             result
           end
         end
-      end
+      end.flat
     end
 
     private
@@ -57,7 +57,7 @@ module RedmineBots::Telegram::Tdlib
       limit = 100
 
       fetch_chats = proc do
-        client.get_chats(offset_chat_id, limit, offset_order).flat_map do |update|
+        client.get_chats(offset_chat_id, limit, offset_order).flat.then do |update|
           chat_ids = update.chat_ids
           unless chat_ids.empty?
             client.get_chat(chat_ids.last).then do |chat|

@@ -22,7 +22,7 @@ module RedmineBots::Telegram::Tdlib
     end
 
     def call(*)
-      Concurrent::Promise.reject(NotImplementedError)
+      Concurrent::Promises.reject(NotImplementedError)
     end
 
     protected
@@ -32,13 +32,15 @@ module RedmineBots::Telegram::Tdlib
     def connect
       client.connect
 
+      settings = Setting.find_by_name(:plugin_redmine_bots).value
+
       if settings['tdlib_use_proxy']
         proxy = TD::Types::ProxyType::Socks5.new(username: settings['tdlib_proxy_user'],
                                                  password: settings['tdlib_proxy_password'])
         client.add_proxy(settings['tdlib_proxy_server'],
                          settings['tdlib_proxy_port'],
                          proxy,
-                         true).flat_map { client.ready }
+                         true).then { client.ready }.flat
       else
         client.ready
       end

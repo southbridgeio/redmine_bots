@@ -1,23 +1,14 @@
 module RedmineBots::Telegram::Tdlib
   class CreateChat < Command
     def call(title, user_ids)
-      @client.on_ready(timeout: 5) do |client|
-        user_ids.each do |id|
-          client.fetch('@type' => 'getUser', 'user_id' => id)
+      connect.then do
+        user_ids.reduce(Promises.fulfilled_future(true)) do |promise, id|
+          promise.then { client.get_user(id) }.flat
+        end.then do
+          client.create_new_basic_group_chat(user_ids, title).then do |chat|
+            client.toggle_basic_group_administrators(chat.type.basic_group_id, false)
+          end.flat
         end
-
-        sleep 1
-
-        chat = client.fetch('@type' => 'createNewBasicGroupChat',
-                                            'title' => title,
-                                            'user_ids' => user_ids)
-
-        sleep 1
-
-        client.fetch('@type' => 'toggleBasicGroupAdministrators',
-                                     'basic_group_id' => chat.dig('type', 'basic_group_id'),
-                                     'everyone_is_administrator' => false)
-        chat
       end
     end
   end

@@ -1,9 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class GetChat < Command
     def call(id)
-      @client.on_ready do |client|
-        client.fetch('@type' => 'getChat', 'chat_id' => id)
-      end
+      connect.then { client.get_chat(id) }.flat
     end
   end
 end

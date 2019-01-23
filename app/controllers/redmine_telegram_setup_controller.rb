@@ -5,7 +5,7 @@ class RedmineTelegramSetupController < ApplicationController
   end
 
   def step_2
-    RedmineBots::Telegram::Tdlib::Authenticate.(params).on_error do |error|
+    RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
       redirect_to plugin_settings_path('redmine_bots'), alert: error.message
     end.wait
   end
@@ -14,7 +14,7 @@ class RedmineTelegramSetupController < ApplicationController
     RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
       save_phone_settings(phone_number: params['phone_number'])
       redirect_to plugin_settings_path('redmine_bots'), notice: t('telegram_common.client.authorize.success')
-    end.on_error do |error|
+    end.rescue do |error|
       redirect_to plugin_settings_path('redmine_bots'), alert: error.message
     end.wait
   end

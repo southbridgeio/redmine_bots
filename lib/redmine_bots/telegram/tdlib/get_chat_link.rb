@@ -1,9 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class GetChatLink < Command
     def call(chat_id)
-      @client.on_ready do |client|
-        client.fetch('@type' => 'generateChatInviteLink', 'chat_id' => chat_id)
-      end
+      connect.then { client.generate_chat_invite_link(chat_id) }.flat
     end
   end
 end
