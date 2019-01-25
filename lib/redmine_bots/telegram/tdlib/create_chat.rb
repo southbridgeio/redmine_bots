@@ -7,9 +7,10 @@ module RedmineBots::Telegram::Tdlib
         end.then do
           client.create_new_basic_group_chat(user_ids, title).then do |chat|
             client.toggle_basic_group_administrators(chat.type.basic_group_id, false)
-          end.flat
-        end
-      end
+            chat
+          end
+        end.flat
+      end.flat
     end
   end
 end

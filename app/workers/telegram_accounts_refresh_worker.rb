@@ -1,6 +1,5 @@
 class TelegramAccountsRefreshWorker
   include Sidekiq::Worker
-  include RedmineBots::Telegram::Tdlib::DependencyProviders::GetUser
 
   sidekiq_options queue: :telegram
 

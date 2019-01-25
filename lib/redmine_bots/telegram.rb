@@ -1,7 +1,4 @@
 module RedmineBots::Telegram
-  extend Tdlib::DependencyProviders::GetMe
-  extend Tdlib::DependencyProviders::AddBot
-
   def self.set_locale
     I18n.locale = Setting['default_language']
   end
@@ -36,11 +33,9 @@ module RedmineBots::Telegram
     self_info = {}
 
     if Setting.plugin_redmine_bots['telegram_phone_number'].present?
-      self_info = get_me.call
-
-      unless self_info['@type'] == 'user'
+      self_info = Tdlib::GetMe.call.rescue do
         raise 'Please, set correct settings for plugin RedmineBots::Telegram'
-      end
+      end.value!.to_h
     end
 
     robot_id = self_info['id']
