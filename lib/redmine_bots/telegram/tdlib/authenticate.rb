@@ -51,22 +51,8 @@ module RedmineBots::Telegram::Tdlib
 
     private
 
-    def fetch_all_chats
-      offset_order = 2**63 - 1
-      offset_chat_id = 0
-      limit = 100
-
-      fetch_chats = proc do
-        client.get_chats(offset_chat_id, limit, offset_order).flat.then do |update|
-          chat_ids = update.chat_ids
-          unless chat_ids.empty?
-            client.get_chat(chat_ids.last).then do |chat|
-              offset_chat_id, offset_order = chat.id, chat.order
-              fetch_chats.call
-            end
-          end
-        end
-      end
+    def auto_connect?
+      false
     end
   end
 end

@@ -1,7 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class GetMe < Command
     def call
-      connect.then { client.get_me }.flat
+      client.get_me
     end
   end
 end

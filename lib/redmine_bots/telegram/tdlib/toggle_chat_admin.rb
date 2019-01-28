@@ -15,7 +15,7 @@ module RedmineBots::Telegram::Tdlib
           else
             TD::Types::ChatMemberStatus::Member.new
           end
-      connect.then { client.get_user(user_id) }.flat.then { client.set_chat_member_status(chat_id, user_id, status) }.flat
+      client.get_user(user_id).then { client.set_chat_member_status(chat_id, user_id, status) }.flat
     end
   end
 end

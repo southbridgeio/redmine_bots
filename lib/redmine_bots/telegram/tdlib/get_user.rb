@@ -1,7 +1,7 @@
 module RedmineBots::Telegram::Tdlib
   class GetUser < Command
     def call(user_id)
-      connect.then { client.get_user(user_id) }.flat
+      client.get_user(user_id)
     end
   end
 end

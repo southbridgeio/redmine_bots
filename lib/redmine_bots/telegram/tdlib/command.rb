@@ -3,6 +3,13 @@ module RedmineBots::Telegram::Tdlib
     include TD::Types
     include Concurrent
 
+    module Callable
+      def call(*)
+        return super unless auto_connect?
+        connect.then { super }.flat
+      end
+    end
+
     private_class_method :new
 
     class << self
@@ -13,6 +20,10 @@ module RedmineBots::Telegram::Tdlib
         ensure
           client.dispose
         end
+      end
+
+      def inherited(klass)
+        klass.prepend(Callable)
       end
     end
 
@@ -26,6 +37,10 @@ module RedmineBots::Telegram::Tdlib
     end
 
     protected
+
+    def auto_connect?
+      true
+    end
 
     attr_reader :client
 
