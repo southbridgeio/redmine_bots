@@ -56,7 +56,7 @@
 
 <hr>
 
-<h3>Tdlib proxy (SOCKS5)</h3>
+<h3>Tdlib proxies (SOCKS5)</h3>
 
 <p>
   <label>
@@ -66,24 +66,8 @@
 </p>
 
 <p>
-  <label for="settings_telegram_proxy_server">Server</label>
-  <%= text_field_tag 'settings[tdlib_proxy_server]', @settings['tdlib_proxy_server'], size: 50 %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxy_port">Proxy port</label>
-  <%= text_field_tag 'settings[tdlib_proxy_port]', @settings['tdlib_proxy_port'], size: 50 %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxy_user">Proxy user</label>
-  <%= text_field_tag 'settings[tdlib_proxy_user]', @settings['tdlib_proxy_user'], size: 50 %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxy_password">Proxy password</label>
-  <%= text_field_tag 'settings[tdlib_proxy_password]', @settings['tdlib_proxy_password'], size: 50, type: 'password' %>
-  <a href="javascript:void(0);" toggle="#settings_tdlib_proxy_password" class="toggle-password">[Показать]</a>
+  <label for="settings_telegram_proxies">List</label>
+  <%= text_area_tag 'settings[telegram_proxies]', @settings['telegram_proxies'], size: 50 %>
 </p>
 
 <hr>
