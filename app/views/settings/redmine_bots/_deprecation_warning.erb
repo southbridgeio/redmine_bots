@@ -1,0 +1,11 @@
+<% if Redmine::Plugin.installed?('redmine_bots') %>
+  <% if RedmineBots.deprecated_plugins.present? %>
+    <h1 style="text-align: center">
+      !!! <%= "#{t 'redmine_bots.settings.deprecated_plugins'}#{RedmineBots.deprecated_plugins.join(', ')}" %> !!!
+    </h1>
+  <% end %>
+<% else %>
+  <h1 style="text-align: center">
+    !!! <a href="https://github.com/centosadmin/redmine_bots" target="_blank">redmine_bots</a> not found !!!
+  </h1>
+<% end %>
