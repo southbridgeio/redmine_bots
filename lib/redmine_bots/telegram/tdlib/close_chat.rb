@@ -8,8 +8,11 @@ module RedmineBots::Telegram::Tdlib
         client.get_chat(chat_id).then do |chat|
           client.get_basic_group_full_info(chat.type.basic_group_id)
         end.flat.then do |group_info|
-          member_ids = group_info.members.reject { |m| m.user_id.in?(robot_ids) }.map(&:user_id) + robot_ids
-          Promises.zip(*member_ids.map { |member_id| delete_member(chat_id, member_id) })
+          bot_members, regular_members = group_info.members.partition { |m| m.user_id.in?(robot_ids) }
+          member_ids = (regular_members + bot_members).map(&:user_id)
+          member_ids.reduce(Promises.fulfilled_future(nil)) do |promise, member_id|
+            promise.then { delete_member(chat_id, member_id) }.flat
+          end
         end.flat
       end.flat
     end
