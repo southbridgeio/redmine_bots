@@ -50,6 +50,8 @@ module RedmineBots::Telegram
       bot      = Telegram::Bot::Client.new(token)
       bot_info = bot.api.get_me['result']
       bot_name = bot_info['username']
+
+      RedmineBots::Telegram::Tdlib::AddBot.(bot_name) if robot_id
     end
 
     plugin_settings = Setting.find_by(name: 'plugin_redmine_bots')
