@@ -1,23 +1,17 @@
 module RedmineBots::Telegram
-  class Bot::FaradayAdapter < Faraday::Adapter::NetHttp
-    def net_http_connection(env)
-      if proxy = fetch_proxy_from_settings
-        Net::HTTP::Proxy(proxy[:server], proxy[:port], proxy[:user], proxy[:password])
-      else
-        Net::HTTP
-      end.new(env[:url].hostname, env[:url].port || (env[:url].scheme == 'https' ? 443 : 80))
-    end
-
-    private
-
-    def fetch_proxy_from_settings
+  class Bot::FaradayAdapter < Faraday::Adapter::EMHttp
+    def configure_proxy(*)
       settings = Setting.find_by_name(:plugin_redmine_bots).value
       return unless settings['bot_use_proxy']
-      {
-          server: settings['bot_proxy_server'],
-          port: settings['bot_proxy_port'],
-          user: settings['bot_proxy_user'],
-          password: settings['bot_proxy_password']
+
+      proxy = TelegramProxy.alive.first
+      return unless proxy
+
+      options[:proxy] = {
+          host: proxy.host,
+          port: proxy.port,
+          type: proxy.protocol,
+          authorization: [proxy.user, proxy.password]
       }
     end
   end
