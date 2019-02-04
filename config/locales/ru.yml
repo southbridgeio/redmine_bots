@@ -5,6 +5,7 @@ ru:
       slack: Slack
       telegram: Telegram
     settings:
+      deprecated_plugins: 'Внимание! Установлены устаревшие плагины:'
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token
       slack_client_id: Client ID

@@ -1,13 +1,13 @@
 class TelegramAccountsRefreshWorker
   include Sidekiq::Worker
-  include RedmineBots::Telegram::Tdlib::DependencyProviders::GetUser
 
   sidekiq_options queue: :telegram
 
   def perform
-    TelegramAccount.all.each do |account|
-      user_data = get_user.(account.telegram_id)
-      account.update_attributes(user_data.slice(*%w[username first_name last_name]))
+    TelegramAccount.where.not(telegram_id: nil).find_each do |account|
+      RedmineBots::Telegram::Tdlib::GetUser.(account.telegram_id).then do |user|
+        account.update_attributes(user.to_h.slice(*%w[username first_name last_name]))
+      end.wait
     end
   end
 end

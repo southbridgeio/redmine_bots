@@ -1,24 +1,27 @@
 class RedmineTelegramSetupController < ApplicationController
-  include RedmineBots::Telegram::Tdlib::DependencyProviders::Authenticate
+  include RedmineBots::Telegram::Tdlib
 
   def step_1
   end
 
   def step_2
-    begin
-      authenticate.(params)
-    rescue RedmineBots::Telegram::Tdlib::Authenticate::AuthenticationError => e
-      redirect_to plugin_settings_path('redmine_telegram_common'), alert: e.message
+    ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
+      RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
+        redirect_to plugin_settings_path('redmine_bots'), alert: error.message
+      end.wait!
     end
   end
 
   def authorize
-    begin
-      authenticate.(params)
-      save_phone_settings(phone_number: params['phone_number'])
-      redirect_to plugin_settings_path('redmine_bots'), notice: t('telegram_common.client.authorize.success')
-    rescue RedmineBots::Telegram::Tdlib::Authenticate::AuthenticationError => e
-      redirect_to plugin_settings_path('redmine_bots'), alert: e.message
+    ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
+      RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
+        save_phone_settings(phone_number: params['phone_number'])
+        redirect_to plugin_settings_path('redmine_bots'), notice: t('telegram_common.client.authorize.success')
+      end.then do
+        RedmineBots::Telegram::Tdlib::FetchAllChats.call.wait!
+      end.rescue do |error|
+        redirect_to plugin_settings_path('redmine_bots'), alert: error.message
+      end.wait!
     end
   end
 
