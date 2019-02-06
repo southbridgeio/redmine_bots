@@ -18,7 +18,8 @@ class TelegramProxy < ActiveRecord::Base
   end
 
   def url
-    "#{protocol}://#{user ? "#{[user, password.to_s].join(':')}@" : ''}#{host}:#{port}"
+    return '' unless host.present?
+    "#{protocol}://#{user ? "#{[user, password.to_s].join(':')}@" : ''}#{[host, port].join(':')}"
   end
 
   def check!

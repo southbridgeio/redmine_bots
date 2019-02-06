@@ -26,7 +26,10 @@ en:
         bot_deinit: Deinitialize bot
         get_updates_hint: bundle exec rake redmine_bots:telegram
         web_hooks_warning: Need https to setup WebHooks
-        use_proxy: Use proxy
+        tdlib_use_proxy: Use proxy for tdlib
+        bot_use_proxy: Use proxy for bot
+        proxy_settings: Proxy settings
+        proxy_list: Proxy list
     requirements:
       title: Requirements
       telegram:

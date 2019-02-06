@@ -56,51 +56,22 @@
 
 <hr>
 
-<h3>Tdlib proxies (SOCKS5)</h3>
+<h3><%= t 'redmine_bots.settings.telegram.proxy_settings' %></h3>
 
 <p>
   <label>
-    <%= t 'redmine_bots.settings.telegram.use_proxy' %>
+    <%= t 'redmine_bots.settings.telegram.tdlib_use_proxy' %>
   </label>
   <%= check_box_tag 'settings[tdlib_use_proxy]', '1', @settings['tdlib_use_proxy'] %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxies">List</label>
-  <%= text_area_tag 'settings[telegram_proxies]', @settings['telegram_proxies'], size: 50 %>
-</p>
-
-<hr>
-
-<h3>Bot proxy</h3>
-
 <p>
   <label>
-    <%= t 'redmine_bots.settings.telegram.use_proxy' %>
+    <%= t 'redmine_bots.settings.telegram.bot_use_proxy' %>
   </label>
   <%= check_box_tag 'settings[bot_use_proxy]', '1', @settings['bot_use_proxy'] %>
 </p>
 
-<p>
-  <label for="settings_telegram_proxy_server">Server</label>
-  <%= text_field_tag 'settings[bot_proxy_server]', @settings['bot_proxy_server'], size: 50 %>
-</p>
+  <%= link_to t('redmine_bots.settings.telegram.proxy_list'), telegram_proxies_path, remote: true %>
 
-<p>
-  <label for="settings_telegram_proxy_port">Proxy port</label>
-  <%= text_field_tag 'settings[bot_proxy_port]', @settings['bot_proxy_port'], size: 50 %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxy_user">Proxy user</label>
-  <%= text_field_tag 'settings[bot_proxy_user]', @settings['bot_proxy_user'], size: 50 %>
-</p>
-
-<p>
-  <label for="settings_telegram_proxy_password">Proxy password</label>
-  <%= text_field_tag 'settings[bot_proxy_password]', @settings['bot_proxy_password'], size: 50, type: 'password' %>
-  <a href="javascript:void(0);" toggle="#settings_bot_proxy_password" class="toggle-password">[Показать]</a>
-</p>
 
 <hr>
 
