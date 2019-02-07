@@ -26,7 +26,7 @@ module RedmineBots::Telegram
         data = env[:body] ? env[:body].to_s : nil
         session.request(env[:method], env[:url].to_s, env[:request_headers], :data => data)
       rescue Errno::ECONNREFUSED, ::Patron::ConnectionFailed
-        raise Error::ConnectionFailed, $!
+        raise Faraday::Error::ConnectionFailed, $!
       end
 
       # Remove the "HTTP/1.1 200", leaving just the reason phrase
@@ -43,9 +43,9 @@ module RedmineBots::Telegram
       end
     rescue ::Patron::Error => err
       if err.message.include?("code 407")
-        raise Error::ConnectionFailed, %{407 "Proxy Authentication Required "}
+        raise Faraday::Error::ConnectionFailed, %{407 "Proxy Authentication Required "}
       else
-        raise Error::ConnectionFailed, err
+        raise Faraday::Error::ConnectionFailed, err
       end
     end
 
