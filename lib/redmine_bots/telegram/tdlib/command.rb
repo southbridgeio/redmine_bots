@@ -54,8 +54,8 @@ module RedmineBots::Telegram::Tdlib
 
         type = TD::Types::ProxyType::Socks5.new(username: proxy.user, password: proxy.password)
         client.add_proxy(proxy.host, proxy.port, type, false).then do |td_proxy|
-          client.enable_proxy(td_proxy.id).then { client.ready }
-        end.flat
+          client.enable_proxy(td_proxy.id)
+        end.flat.then { client.ready }
       else
         client.ready
       end
