@@ -49,9 +49,7 @@ module RedmineBots::Telegram::Tdlib
 
       settings = Setting.find_by_name(:plugin_redmine_bots).value
 
-      if settings['tdlib_use_proxy']
-        proxy = TelegramProxy.alive.socks5.first
-
+      if settings['tdlib_use_proxy'] && proxy = TelegramProxy.alive.socks5.first
         type = TD::Types::ProxyType::Socks5.new(username: proxy.user, password: proxy.password)
         client.add_proxy(proxy.host, proxy.port, type, false).then do |td_proxy|
           client.enable_proxy(td_proxy.id)
