@@ -50,19 +50,12 @@ module RedmineBots::Telegram::Tdlib
       settings = Setting.find_by_name(:plugin_redmine_bots).value
 
       if settings['tdlib_use_proxy']
-        proxies = settings['telegram_proxies'].split("\n").map(&RedmineBots::Telegram::Proxy.method(:parse))
+        proxy = TelegramProxy.alive.socks5.first
 
-        promises = proxies.map do |proxy|
-          type = TD::Types::ProxyType::Socks5.new(username: proxy.user, password: proxy.password)
-          promise = client.add_proxy(proxy.host, proxy.port, type, false).then do |td_proxy|
-            client.ping_proxy(td_proxy.id).then { client.enable_proxy(td_proxy.id) }.flat
-          end.flat.wait
-
-          break promise if promise.fulfilled?
-          promise
-        end
-
-        Concurrent::Promises.any(*promises).then { client.ready }.flat
+        type = TD::Types::ProxyType::Socks5.new(username: proxy.user, password: proxy.password)
+        client.add_proxy(proxy.host, proxy.port, type, false).then do |td_proxy|
+          client.enable_proxy(td_proxy.id)
+        end.flat.then { client.ready }
       else
         client.ready
       end

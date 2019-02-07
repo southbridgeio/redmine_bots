@@ -1,0 +1,8 @@
+<p id="<%= dom_id(proxy) %>">
+  <%= hidden_field_tag 'proxies[][id]', proxy.id %>
+  <%= text_field_tag 'proxies[][url]', proxy.url, style: 'width: 50%' %>
+
+  <% unless proxy.new_record? %>
+    <%= link_to l(:button_delete), telegram_proxy_destroy_path(id: proxy.id), remote: true, method: :delete %>
+  <% end %>
+</p>

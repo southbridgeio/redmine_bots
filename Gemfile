@@ -10,6 +10,7 @@ gem 'tdlib-ruby', github: 'centosadmin/tdlib-ruby', branch: 'develop'
 gem 'jwt'
 gem 'filelock'
 gem 'lazy_object', '~> 0.0.2'
+gem 'patron'
 
 group :test do
   gem 'timecop'
