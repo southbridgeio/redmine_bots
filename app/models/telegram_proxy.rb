@@ -23,8 +23,13 @@ class TelegramProxy < ActiveRecord::Base
   end
 
   def check!
-    response = connection.get('/')
-    update(alive: response.status == 200)
+    status =
+        begin
+          connection.get('/').status
+        rescue Faraday::ClientError
+          nil
+        end
+    update(alive: status == 200)
   end
 
   private
