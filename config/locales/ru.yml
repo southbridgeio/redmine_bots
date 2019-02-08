@@ -5,6 +5,7 @@ ru:
       slack: Slack
       telegram: Telegram
     settings:
+      deprecated_plugins: 'Внимание! Установлены устаревшие плагины:'
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token
       slack_client_id: Client ID
@@ -26,7 +27,10 @@ ru:
         bot_deinit: Деинициализировать бота
         get_updates_hint: bundle exec rake redmine_bots:telegram
         web_hooks_warning: Нужен https протокол, чтобы настроить WebHooks
-        use_proxy: Использовать прокси
+        tdlib_use_proxy: Использовать прокси для tdlib
+        bot_use_proxy: Использовать прокси для бота
+        proxy_settings: Настройки прокси
+        proxy_list: Список прокси
     requirements:
       title: Требования
       telegram:
@@ -39,6 +43,8 @@ ru:
         redmine_host: "Убедитесь, что установлен правильный хост в настройках Redmine (сейчас: %{host})"
         tdlib_installation: "Необходимо поместить libtdjson в директорию redmine_root/vendor или добавить в ldconfig. <a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>Инструкции по сборке</a>."
     telegram:
+      authorize:
+        success: Аутентификация прошла успешно!
       bot:
         start:
           instruction_html: |

@@ -1,6 +1,21 @@
+<%= render partial: 'settings/redmine_bots/deprecation_warning' %>
+
 <% tabs = [
     {name: 'slack', partial: 'settings/redmine_bots/slack', label: 'redmine_bots.label.slack'},
     {name: 'telegram', partial: 'settings/redmine_bots/telegram', label: 'redmine_bots.label.telegram'},
 ] %>
 
 <%= render_tabs tabs %>
+
+<script>
+  $(".toggle-password").click(function() {
+    var input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+      $(this).text('[Скрыть]');
+      input.attr("type", "text");
+    } else {
+      $(this).text('[Показать]');
+      input.attr("type", "password");
+    }
+  });
+</script>

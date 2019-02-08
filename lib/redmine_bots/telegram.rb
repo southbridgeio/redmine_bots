@@ -1,7 +1,4 @@
 module RedmineBots::Telegram
-  extend Tdlib::DependencyProviders::GetMe
-  extend Tdlib::DependencyProviders::AddBot
-
   def self.set_locale
     I18n.locale = Setting['default_language']
   end
@@ -18,16 +15,27 @@ module RedmineBots::Telegram
     @update_manager ||= UpdateManager.new
   end
 
+  def self.tdlib_client
+    settings = Setting.find_by_name(:plugin_redmine_bots).value
+    TD::Api.set_log_file_path(Rails.root.join('log', 'redmine_bots', 'tdlib.log').to_s)
+    config = {
+        api_id: settings['telegram_api_id'],
+        api_hash: settings['telegram_api_hash'],
+        database_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'db').to_s,
+        files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
+    }
+
+    TD::Client.new(**config)
+  end
+
   def self.init_bot
     token = Setting.plugin_redmine_bots['telegram_bot_token']
     self_info = {}
 
     if Setting.plugin_redmine_bots['telegram_phone_number'].present?
-      self_info = get_me.call
-
-      unless self_info['@type'] == 'user'
+      self_info = Tdlib::GetMe.call.rescue do
         raise 'Please, set correct settings for plugin RedmineBots::Telegram'
-      end
+      end.value!.to_h
     end
 
     robot_id = self_info['id']
@@ -42,6 +50,8 @@ module RedmineBots::Telegram
       bot      = Telegram::Bot::Client.new(token)
       bot_info = bot.api.get_me['result']
       bot_name = bot_info['username']
+
+      RedmineBots::Telegram::Tdlib::AddBot.(bot_name) if robot_id
     end
 
     plugin_settings = Setting.find_by(name: 'plugin_redmine_bots')

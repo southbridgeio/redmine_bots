@@ -24,3 +24,10 @@ scope :telegram do
   get 'check_jwt' => 'telegram_login#check_jwt'
   post 'send_sign_in_link' => 'telegram_login#send_sign_in_link', as: 'send_telegram_sign_in_link'
 end
+
+scope :telegram_proxies do
+  get '/' => 'telegram_proxies#index', as: :telegram_proxies
+  get '/new' => 'telegram_proxies#new', as: :telegram_proxy_new
+  post '/' => 'telegram_proxies#update', as: :telegram_proxies_update
+  delete '/:id' => 'telegram_proxies#destroy', as: :telegram_proxy_destroy
+end

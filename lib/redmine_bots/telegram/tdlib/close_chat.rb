@@ -1,33 +1,29 @@
 module RedmineBots::Telegram::Tdlib
   class CloseChat < Command
     def call(chat_id)
-      @client.on_ready do |client|
-        me = client.fetch('@type' => 'getMe')
-        bot_id = Setting.find_by(name: 'plugin_redmine_bots').value['telegram_bot_id'].to_i
-
-        chat = client.fetch('@type' => 'getChat', 'chat_id' => chat_id)
-
-        group_info = client.fetch('@type' => 'getBasicGroupFullInfo',
-                                     'basic_group_id' => chat.dig('type', 'basic_group_id')
-        )
-        return if group_info['@type'] == 'error'
-
-        group_info['members'].map { |m| m['user_id'] }.each do |user_id|
-          delete_member(chat_id, user_id) unless user_id.in?([me['id'], bot_id])
-        end
-
-        delete_member(chat_id, me['id'])
-        delete_member(chat_id, bot_id)
-      end
+      Promises.zip(
+        Promises.future { Setting.find_by(name: 'plugin_redmine_bots').value['telegram_bot_id'].to_i },
+        client.get_me.then(&:id)
+      ).then do |*robot_ids|
+        client.get_chat(chat_id).then do |chat|
+          client.get_basic_group_full_info(chat.type.basic_group_id)
+        end.flat.then do |group_info|
+          bot_id, robot_id = robot_ids
+          bot_member_ids, regular_member_ids = group_info.members.partition { |m| m.user_id.in?(robot_ids) }.map do |arr|
+            arr.map(&:user_id)
+          end
+          member_ids = (regular_member_ids + (bot_member_ids & [bot_id]) + (bot_member_ids & [robot_id]))
+          member_ids.reduce(Promises.fulfilled_future(nil)) do |promise, member_id|
+            promise.then { delete_member(chat_id, member_id) }.flat
+          end
+        end.flat
+      end.flat
     end
 
     private
 
     def delete_member(chat_id, user_id)
-      @client.fetch('@type' => 'setChatMemberStatus',
-                                    'chat_id' => chat_id,
-                                    'user_id' => user_id,
-                                    'status' => { '@type' => 'chatMemberStatusLeft' })
+      client.set_chat_member_status(chat_id, user_id, ChatMemberStatus::Left.new)
     end
   end
 end

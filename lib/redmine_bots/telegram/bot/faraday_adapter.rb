@@ -1,24 +1,95 @@
 module RedmineBots::Telegram
-  class Bot::FaradayAdapter < Faraday::Adapter::NetHttp
-    def net_http_connection(env)
-      if proxy = fetch_proxy_from_settings
-        Net::HTTP::Proxy(proxy[:server], proxy[:port], proxy[:user], proxy[:password])
+  class Bot::FaradayAdapter < Faraday::Adapter
+    dependency 'patron'
+
+    def call(env)
+      super
+      # TODO: support streaming requests
+      env[:body] = env[:body].read if env[:body].respond_to? :read
+
+      session = ::Patron::Session.new
+      @config_block.call(session) if @config_block
+      configure_ssl(session, env[:ssl]) if env[:url].scheme == 'https' and env[:ssl]
+
+      if req = env[:request]
+        session.timeout = session.connect_timeout = req[:timeout] if req[:timeout]
+        session.connect_timeout = req[:open_timeout]              if req[:open_timeout]
+
+        settings = Setting.find_by_name(:plugin_redmine_bots).value
+
+        if settings['bot_use_proxy'] && proxy = TelegramProxy.alive.first
+          session.proxy = proxy.url
+        end
+      end
+
+      response = begin
+        data = env[:body] ? env[:body].to_s : nil
+        session.request(env[:method], env[:url].to_s, env[:request_headers], :data => data)
+      rescue Errno::ECONNREFUSED, ::Patron::ConnectionFailed
+        raise Faraday::Error::ConnectionFailed, $!
+      end
+
+      # Remove the "HTTP/1.1 200", leaving just the reason phrase
+      reason_phrase = response.status_line.gsub(/^.* \d{3} /, '')
+
+      save_response(env, response.status, response.body, response.headers, reason_phrase)
+
+      @app.call env
+    rescue ::Patron::TimeoutError => err
+      if connection_timed_out_message?(err.message)
+        raise Faraday::Error::ConnectionFailed, err
       else
-        Net::HTTP
-      end.new(env[:url].hostname, env[:url].port || (env[:url].scheme == 'https' ? 443 : 80))
+        raise Faraday::Error::TimeoutError, err
+      end
+    rescue ::Patron::Error => err
+      if err.message.include?("code 407")
+        raise Faraday::Error::ConnectionFailed, %{407 "Proxy Authentication Required "}
+      else
+        raise Faraday::Error::ConnectionFailed, err
+      end
+    end
+
+    if loaded? && defined?(::Patron::Request::VALID_ACTIONS)
+      # HAX: helps but doesn't work completely
+      # https://github.com/toland/patron/issues/34
+      ::Patron::Request::VALID_ACTIONS.tap do |actions|
+        if actions[0].is_a?(Symbol)
+          actions << :patch unless actions.include? :patch
+          actions << :options unless actions.include? :options
+        else
+          # Patron 0.4.20 and up
+          actions << "PATCH" unless actions.include? "PATCH"
+          actions << "OPTIONS" unless actions.include? "OPTIONS"
+        end
+      end
+    end
+
+    def configure_ssl(session, ssl)
+      if ssl.fetch(:verify, true)
+        session.cacert = ssl[:ca_file]
+      else
+        session.insecure = true
+      end
+    end
+
+    def telegram_proxy=(proxy)
+      @telegram_proxy = proxy
     end
 
     private
 
-    def fetch_proxy_from_settings
-      settings = Setting.find_by_name(:plugin_redmine_bots).value
-      return unless settings['bot_use_proxy']
-      {
-          server: settings['bot_proxy_server'],
-          port: settings['bot_proxy_port'],
-          user: settings['bot_proxy_user'],
-          password: settings['bot_proxy_password']
-      }
+    CURL_TIMEOUT_MESSAGES = [ "Connection time-out",
+                              "Connection timed out",
+                              "Timed out before name resolve",
+                              "server connect has timed out",
+                              "Resolving timed out",
+                              "name lookup timed out",
+                              "timed out before SSL",
+                              "connect() timed out"
+    ].freeze
+
+    def connection_timed_out_message?(message)
+      CURL_TIMEOUT_MESSAGES.any? { |curl_message| message.include?(curl_message) }
     end
   end
 end
