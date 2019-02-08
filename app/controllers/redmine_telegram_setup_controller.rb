@@ -5,24 +5,28 @@ class RedmineTelegramSetupController < ApplicationController
   end
 
   def step_2
-    ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-      RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
+    Rails.application.executor.wrap do
+      promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
         redirect_to plugin_settings_path('redmine_bots'), alert: error.message
-      end.wait!
+      end
+
+      ActiveSupport::Dependencies.interlock.permit_concurrent_loads { promise.wait! }
     end
   end
 
   def authorize
-    ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-      RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
+    Rails.application.executor.wrap do
+      promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
+        RedmineBots::Telegram::Tdlib::FetchAllChats.call
+      end.flat.then do
         save_phone_settings(phone_number: params['phone_number'])
-        redirect_to plugin_settings_path('redmine_bots'), notice: t('telegram_common.client.authorize.success')
-      end.then do
-        RedmineBots::Telegram::Tdlib::FetchAllChats.call.wait!
-      end.rescue do |error|
-        redirect_to plugin_settings_path('redmine_bots'), alert: error.message
-      end.wait!
+        redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_bots.telegram.authorize.success')
+      end
+
+      ActiveSupport::Dependencies.interlock.permit_concurrent_loads { promise.wait! }
     end
+  rescue TD::Error => error
+    redirect_to plugin_settings_path('redmine_bots'), alert: error.message
   end
 
   def reset

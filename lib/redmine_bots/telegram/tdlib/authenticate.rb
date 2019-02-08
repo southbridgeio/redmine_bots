@@ -20,7 +20,7 @@ module RedmineBots::Telegram::Tdlib
         when AuthorizationState::WaitCode
           promise = client.check_authentication_code(params[:phone_code]) if params[:phone_code]
         when AuthorizationState::Ready
-          promise = fetch_all_chats
+          promise = Promises.fulfilled_future(true)
         else
           next
         end
@@ -40,9 +40,9 @@ module RedmineBots::Telegram::Tdlib
         Promises.future do
           mutex.synchronize do
             condition.wait(mutex, TIMEOUT)
-            raise TD::ErrorProxy.new(error) if error
+            raise TD::Error.new(error) if error
             error = TD::Types::Error.new(code: 0, message: 'Unknown error. Please, see TDlib logs.') if result.nil?
-            raise TD::ErrorProxy.new(error) if error
+            raise TD::Error.new(error) if error
             result
           end
         end

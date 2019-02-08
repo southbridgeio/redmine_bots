@@ -43,6 +43,8 @@ ru:
         redmine_host: "Убедитесь, что установлен правильный хост в настройках Redmine (сейчас: %{host})"
         tdlib_installation: "Необходимо поместить libtdjson в директорию redmine_root/vendor или добавить в ldconfig. <a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>Инструкции по сборке</a>."
     telegram:
+      authorize:
+        success: Аутентификация прошла успешно!
       bot:
         start:
           instruction_html: |
