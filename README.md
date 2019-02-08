@@ -65,6 +65,8 @@ To make telegram client working you should follow steps:
 * Go to the plugin settings page
 * Press "Authorize Telegram client" button and follow instructions
 
+**IMPORTANT:** 2FA is not supported at the moment
+
 ### Bot API
 
 It is necessary to register a bot and get its token.
