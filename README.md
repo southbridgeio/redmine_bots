@@ -10,6 +10,11 @@ This plugin provides common stuff to build redmine plugins that involve Slack/Te
 * Ruby 2.3+
 * Redmine 3.4+
 
+### Upgrade from 0.2.0 to 0.3+
+
+From 0.3.0 proxy settings are unified for tdlib and bot and there is support for multiple proxies.
+If you have used proxies before, you should reassign it on plugin settings page.
+
 ### Upgrade from 0.1.0 to 0.2+
 
 Webhook URL is changed in 0.2.0 because of webhook secret. You need to reinitialize webhook from plugin settings page.
@@ -21,6 +26,21 @@ Telegram support includes:
 * Common components to interact with Bot API
 * Common client commands that utilize [tdlib-ruby](https://github.com/centosadmin/tdlib-ruby)
 * [Telegram Login](https://core.telegram.org/widgets/login) to connect Redmine and Telegram accounts
+
+
+### Proxy
+
+You can set proxy pool on plugin settings page. Proxies are gonna be monitored for availability, and first working proxy will be taken for every request.
+
+Proxy format is same to curl:
+
+```bash
+http://user:password@127.0.0.1:3128
+socks5://user:password@127.0.0.1:9050
+```
+
+Only SOCKS5 and HTTP proxies are supported.
+Note that tdlib supports only SOCKS5 proxies, so you should add at least one SOCKS5 proxy if you want tdlib to be proxied.
 
 ### Tdlib
 In order to use tdlib client you need compiled [TDLib](https://github.com/tdlib/td).
