@@ -1,3 +1,7 @@
+# 0.3.1
+
+* Fix Rails 4 support
+
 # 0.3.0
 
 * Hidden secret fields in settings

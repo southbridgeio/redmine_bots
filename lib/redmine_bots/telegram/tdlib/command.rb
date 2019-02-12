@@ -15,10 +15,12 @@ module RedmineBots::Telegram::Tdlib
     class << self
       def call(*args)
         Filelock Rails.root.join('tmp', 'redmine_bots', 'tdlib_lock'), wait: 10 do
-          client = RedmineBots::Telegram.tdlib_client
-          new(client).call(*args).wait
-        ensure
-          client.dispose
+          begin
+            client = RedmineBots::Telegram.tdlib_client
+            new(client).call(*args).wait
+          ensure
+            client.dispose
+          end
         end
       end
 

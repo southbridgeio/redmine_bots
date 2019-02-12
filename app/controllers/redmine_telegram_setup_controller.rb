@@ -5,17 +5,17 @@ class RedmineTelegramSetupController < ApplicationController
   end
 
   def step_2
-    Rails.application.executor.wrap do
+    RedmineBots::Telegram::Tdlib.wrap do
       promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
         redirect_to plugin_settings_path('redmine_bots'), alert: error.message
       end
 
-      ActiveSupport::Dependencies.interlock.permit_concurrent_loads { promise.wait! }
+      RedmineBots::Telegram::Tdlib.permit_concurrent_loads { promise.wait! }
     end
   end
 
   def authorize
-    Rails.application.executor.wrap do
+    RedmineBots::Telegram::Tdlib.wrap do
       promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
         RedmineBots::Telegram::Tdlib::FetchAllChats.call
       end.flat.then do
@@ -23,7 +23,7 @@ class RedmineTelegramSetupController < ApplicationController
         redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_bots.telegram.authorize.success')
       end
 
-      ActiveSupport::Dependencies.interlock.permit_concurrent_loads { promise.wait! }
+      RedmineBots::Telegram::Tdlib.permit_concurrent_loads { promise.wait! }
     end
   rescue TD::Error => error
     redirect_to plugin_settings_path('redmine_bots'), alert: error.message
