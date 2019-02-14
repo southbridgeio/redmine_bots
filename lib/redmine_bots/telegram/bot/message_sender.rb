@@ -2,6 +2,7 @@ module RedmineBots::Telegram
   class Bot
     class MessageSender
       SLEEP_TIME = 30
+      FARADAY_SLEEP_TIME = 5
 
       class BotKickedError
         def self.===(e)
@@ -43,6 +44,10 @@ module RedmineBots::Telegram
       rescue FloodError => e
         logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
         sleep SLEEP_TIME
+        (tries -= 1).zero? ? raise(e) : retry
+      rescue Faraday::ClientError
+        logger.warn("Faraday client error. Sleeping #{FARADAY_SLEEP_TIME} seconds...")
+        sleep FARADAY_SLEEP_TIME
         (tries -= 1).zero? ? raise(e) : retry
       end
 
