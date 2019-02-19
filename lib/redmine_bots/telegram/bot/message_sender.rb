@@ -37,7 +37,6 @@ module RedmineBots::Telegram
 
       def call
         tries ||= 3
-        socks_tries ||= 50
         message_params = {
           chat_id: chat_id,
           text: message,
@@ -54,8 +53,6 @@ module RedmineBots::Telegram
         logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
         sleep SLEEP_TIME
         (tries -= 1).zero? ? raise(e) : retry
-      rescue TelegramProxy::SocksConnectionError => e
-        (socks_tries -= 1).zero? ? raise(e) : retry
       rescue Faraday::ClientError => e
         logger.warn("Faraday client error. Sleeping #{FARADAY_SLEEP_TIME} seconds...")
         sleep FARADAY_SLEEP_TIME
