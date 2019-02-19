@@ -1,4 +1,10 @@
 class TelegramProxy < ActiveRecord::Base
+  class SocksConnectionError
+    def self.===(e)
+      e.is_a?(Faraday::ConnectionFailed) && e.message.include?("Can't complete SOCKS5 connection to")
+    end
+  end
+
   enum protocol: %i[http socks5]
 
   validates_presence_of :host, :port, :protocol
@@ -23,9 +29,13 @@ class TelegramProxy < ActiveRecord::Base
   end
 
   def check!
+    socks_tries ||= 50
+
     status =
         begin
           connection.get('/').status
+        rescue SocksConnectionError => e
+          (socks_tries -= 1).zero? ? raise(e) : retry
         rescue Faraday::ClientError
           nil
         end
