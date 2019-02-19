@@ -53,7 +53,7 @@ module RedmineBots::Telegram
         logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
         sleep SLEEP_TIME
         (tries -= 1).zero? ? raise(e) : retry
-      rescue Faraday::ClientError
+      rescue Faraday::ClientError => e
         logger.warn("Faraday client error. Sleeping #{FARADAY_SLEEP_TIME} seconds...")
         sleep FARADAY_SLEEP_TIME
         (tries -= 1).zero? ? raise(e) : retry
