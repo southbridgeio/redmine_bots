@@ -34,8 +34,8 @@ class TelegramProxy < ActiveRecord::Base
     status =
         begin
           connection.get('/').status
-        rescue SocksConnectionError => e
-          (socks_tries -= 1).zero? ? raise(e) : retry
+        rescue SocksConnectionError
+          (socks_tries -= 1).zero? ? nil : retry
         rescue Faraday::ClientError
           nil
         end
