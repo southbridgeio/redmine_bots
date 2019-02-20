@@ -19,6 +19,7 @@ module RedmineBots::Telegram
 
         if settings['bot_use_proxy'] && proxy = TelegramProxy.alive.first
           session.proxy = proxy.url
+          session.force_ipv4 = true
         end
       end
 

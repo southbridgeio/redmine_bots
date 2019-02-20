@@ -36,7 +36,10 @@ class TelegramProxy < ActiveRecord::Base
 
   def connection
     Faraday.new('https://telegram.org') do |conn|
-      conn.adapter(:patron) { |adapter| adapter.proxy = url }
+      conn.adapter(:patron) do |adapter|
+        adapter.proxy = url
+        adapter.force_ipv4 = true
+      end
     end
   end
 end
