@@ -25,6 +25,8 @@ class TelegramProxiesController < ApplicationController
       proxy.save
     end
 
+    TelegramProxyMonitoringWorker.perform_async
+
     respond_to do |format|
       format.js
     end

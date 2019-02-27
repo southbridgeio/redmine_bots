@@ -30,6 +30,8 @@ en:
         bot_use_proxy: Use proxy for bot
         proxy_settings: Proxy settings
         proxy_list: Proxy list
+        proxy_alive: Proxy is accessible
+        proxy_dead: Proxy is not accessible
     requirements:
       title: Requirements
       telegram:
