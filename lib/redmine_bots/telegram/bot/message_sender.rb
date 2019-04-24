@@ -31,7 +31,7 @@ module RedmineBots::Telegram
       def initialize(params)
         @message = params.fetch(:message)
         @chat_id = params.fetch(:chat_id)
-        @bot_token = params.fetch(:bot_token)
+        @bot_token = params.fetch(:bot_token, RedmineBots::Telegram.bot_token)
         @params = params.except(:message, :chat_id, :bot_token)
       end
 
