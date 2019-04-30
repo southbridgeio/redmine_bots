@@ -28,6 +28,12 @@ module RedmineBots::Telegram
         end
       end
 
+      class ChatNotFoundError
+        def self.===(e)
+          e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?('chat not found')
+        end
+      end
+
       def self.call(params)
         new(params).call
       end
@@ -57,6 +63,8 @@ module RedmineBots::Telegram
         logger.warn("Bot is blocked by user. Chat Id: #{chat_id}, params: #{params.inspect}")
       rescue UserDeactivatedError
         logger.warn("User is deactivated: #{chat_id}, params: #{params.inspect}")
+      rescue ChatNotFoundError
+        logger.warn("Chat not found: #{chat_id}, params: #{params.inspect}")
       rescue FloodError => e
         logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
         sleep SLEEP_TIME
