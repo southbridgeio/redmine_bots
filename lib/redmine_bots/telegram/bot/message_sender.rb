@@ -28,6 +28,12 @@ module RedmineBots::Telegram
         end
       end
 
+      class ForbiddenError
+        def self.===(e)
+          e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?("bot can't initiate conversation with a user")
+        end
+      end
+
       class ChatNotFoundError
         def self.===(e)
           e.is_a?(Telegram::Bot::Exceptions::ResponseError) && e.message.include?('chat not found')
@@ -65,6 +71,8 @@ module RedmineBots::Telegram
         logger.warn("User is deactivated: #{chat_id}, params: #{params.inspect}")
       rescue ChatNotFoundError
         logger.warn("Chat not found: #{chat_id}, params: #{params.inspect}")
+      rescue ForbiddenError
+        logger.warn("Bot can't initiate conversation with a user. Chat Id: #{chat_id}, params: #{params.inspect}")
       rescue FloodError => e
         logger.warn("Too many requests. Sleeping #{SLEEP_TIME} seconds...")
         sleep SLEEP_TIME
