@@ -1,7 +1,7 @@
 module RedmineBots::Telegram
   class Bot
     class MessageSender
-      SLEEP_TIME = 30
+      SLEEP_TIME = 60
       FARADAY_SLEEP_TIME = 5
 
       class BotKickedError
