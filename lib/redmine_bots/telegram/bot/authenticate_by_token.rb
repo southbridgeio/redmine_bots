@@ -14,7 +14,7 @@ module RedmineBots
 
         case @context
         when '2fa_connection'
-          telegram_account = prepare_telegram_account(model_class: Redmine2FA::TelegramConnection)
+          telegram_account = prepare_telegram_account(model_class: RedmineTwoFa::TelegramConnection)
         when 'account_connection'
           telegram_account = prepare_telegram_account(model_class: TelegramAccount)
         else
