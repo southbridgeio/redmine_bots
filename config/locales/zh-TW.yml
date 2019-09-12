@@ -30,13 +30,15 @@ zh-TW:
         bot_use_proxy: 機器人使用 Proxy
         proxy_settings: Proxy 設定
         proxy_list: Proxy 列表
+        proxy_alive: Proxy 可用
+        proxy_dead: Proxy 不可用
     requirements:
       title: 需求
       telegram:
-        valid: 合法
+        valid: 有效
         description: 說明
-        no: No
-        yes: Yes
+        no: 否
+        yes: 是
         rails_env: "請確定您的 RAILS_ENV 環境變數設定為 production（目前為：%{rails_env}）"
         redmine_host: "請確定您在 Redmine 的設定中有正確設定 Host（目前為：%{host}）"
         tdlib_installation: "您應該安裝 libtdjson 到 Redmine 目錄下的 vendor 目錄，或者安裝到 ldconfig。<a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>安裝教學</a>。"
@@ -53,7 +55,7 @@ zh-TW:
           already_connected: 您的帳戶已經連結。
           wait_for_email: 我們寄了一封 Email 到 "%{email}"，請依照信中的指示操作。
           wrong_email: 錯誤的信箱！找不到信箱對應的使用者。再失敗 %{attempts} 次之後，這個帳號將被鎖定一個小時。
-          blocked:您的帳號已被鎖定，請於 %{unblock} 分鐘後再嘗試。
+          blocked: 您的帳號已被鎖定，請於 %{unblock} 分鐘後再嘗試。
           login_link: "使用這個連結來連結這個帳號 和 Redmine：%{link}"
         group:
           no_commands: "沒有群組聊天用的指令。私聊指令："
