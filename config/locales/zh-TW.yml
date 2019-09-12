@@ -1,0 +1,84 @@
+zh-TW:
+  redmine_bots:
+    label:
+      slack: Slack
+      telegram: Telegram
+    settings:
+      deprecated_plugins: '警告！安裝了棄用的外掛：'
+      slack_oauth_token: OAuth Access Token
+      slack_bot_oauth_token: Bot User OAuth Access Token
+      slack_client_id: Client ID
+      slack_client_secret: Client Secret
+      slack_verification_token: 驗證 Token
+      telegram:
+        phone_number: "電話號碼"
+        phone_number_hint: "以台灣手機 0912-345-678 為例，需輸入：886912345678"
+        phone_code: "Telegram 代碼"
+        authorize_button_code: "接收代碼"
+        authorize_button: "授權"
+        authorize_client: "授權給 Telegram 用戶端"
+        authorize_hint: "請按下面的按鈕授權給 Telegram。目前的授權則會被清除。"
+        plugin_link: "回到外掛設定"
+        auth_step_1: "接收 Telegram 代碼"
+        auth_step_2: "授權"
+        reset: "重設快取及授權"
+        bot_init: 初始化機器人
+        bot_deinit: 停用機器人
+        get_updates_hint: bundle exec rake redmine_bots:telegram
+        web_hooks_warning: 設定 WebHooks 需要 HTTPS
+        tdlib_use_proxy: tdlib 使用 Proxy
+        bot_use_proxy: 機器人使用 Proxy
+        proxy_settings: Proxy 設定
+        proxy_list: Proxy 列表
+    requirements:
+      title: 需求
+      telegram:
+        valid: 合法
+        description: 說明
+        no: No
+        yes: Yes
+        rails_env: "請確定您的 RAILS_ENV 環境變數設定為 production（目前為：%{rails_env}）"
+        redmine_host: "請確定您在 Redmine 的設定中有正確設定 Host（目前為：%{host}）"
+        tdlib_installation: "您應該安裝 libtdjson 到 Redmine 目錄下的 vendor 目錄，或者安裝到 ldconfig。<a href='https://core.telegram.org/tdlib/docs/#building' target='_blank'>安裝教學</a>。"
+    telegram:
+      authorize:
+        success: 驗證完成！
+      bot:
+        start:
+          instruction_html: |
+            現在我們必須連結您的 Redmine 和 Telegram 帳號。
+            請輸入 /connect 指令。
+          hello: 您好！
+        connect:
+          already_connected: 您的帳戶已經連結。
+          wait_for_email: 我們寄了一封 Email 到 "%{email}"，請依照信中的指示操作。
+          wrong_email: 錯誤的信箱！找不到信箱對應的使用者。再失敗 %{attempts} 次之後，這個帳號將被鎖定一個小時。
+          blocked:您的帳號已被鎖定，請於 %{unblock} 分鐘後再嘗試。
+          login_link: "使用這個連結來連結這個帳號 和 Redmine：%{link}"
+        group:
+          no_commands: "沒有群組聊天用的指令。私聊指令："
+          private_command: '這個指令只能用在私聊。'
+        private:
+          group_command: '這個指令只能用在群組聊天。'
+          help:
+            start: "開始使用機器人"
+            connect: "連結 Redmine 和 Telegram 帳號"
+            help: "指令的幫助"
+            token: 取得驗證連結
+        login:
+          success: 驗證成功
+          errors:
+            not_logged: 您尚未登入
+            hash_invalid: Hash 不合法
+            hash_outdated: 請求已過期
+            wrong_account: 錯誤的 Telegram 帳號
+            not_persisted: Failed to persist Telegram account data
+            invalid_token: Token 不合法
+          follow_link: 請根據連結
+          send_to_telegram: 傳送驗證連結到 Telegram
+          widget_not_visible: 如果小工具沒有顯示
+          write_to_bot: "如果小工具沒有顯示，請發送 /token 訊息給機器人 @%{bot}。"
+    slack:
+      commands:
+        connect: 連結 Slack 帳號和 Redmine
+        help: 指令的幫助訊息
