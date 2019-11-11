@@ -2,7 +2,7 @@ module RedmineBots::Telegram
   class Bot
     class MessageSender
       SLEEP_TIME = 60
-      FARADAY_SLEEP_TIME = 5
+      FARADAY_SLEEP_TIME = 10
       TRIES = 5
 
       class BotKickedError
@@ -75,13 +75,13 @@ module RedmineBots::Telegram
       rescue ForbiddenError
         logger.warn("Bot can't initiate conversation with a user. Chat Id: #{chat_id}, params: #{params.inspect}")
       rescue FloodError => e
-        sleep_time = e.send(:data).dig('parameters', 'retry_after') || SLEEP_TIME
+        sleep_time = (e.send(:data).dig('parameters', 'retry_after') || SLEEP_TIME) * (TRIES - tries + 1)
         logger.warn("Too many requests. Sleeping #{sleep_time} seconds...")
         sleep sleep_time
         (tries -= 1).zero? ? raise(e) : retry
       rescue Faraday::ClientError => e
         logger.warn("Faraday client error. Sleeping #{FARADAY_SLEEP_TIME} seconds...")
-        sleep FARADAY_SLEEP_TIME
+        sleep FARADAY_SLEEP_TIME * (TRIES - tries + 1)
         (tries -= 1).zero? ? raise(e) : retry
       end
 
