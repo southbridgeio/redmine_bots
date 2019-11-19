@@ -32,11 +32,11 @@ Sidekiq::Cron::Job.create(name:  'Telegram proxy monitoring',
 
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
-  url 'https://github.com/centosadmin/redmine_bots'
+  url 'https://github.com/southbridgeio/redmine_bots'
   description 'This is a platform for building Redmine bots'
   version '0.3.1'
   author 'Southbridge'
-  author_url 'https://github.com/centosadmin'
+  author_url 'https://github.com/southbridgeio'
 
   settings(
     default: {
