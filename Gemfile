@@ -6,7 +6,7 @@ gem 'sidekiq-rate-limiter', git: 'https://github.com/centosadmin/sidekiq-rate-li
 gem 'telegram-bot-ruby', git: 'https://github.com/centosadmin/telegram-bot-ruby.git'
 gem 'slack-ruby-bot'
 gem 'celluloid-io'
-gem 'tdlib-ruby', '2.0.0'
+gem 'tdlib-ruby', '2.2.0'
 gem 'jwt'
 gem 'filelock'
 gem 'patron'
