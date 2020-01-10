@@ -7,7 +7,7 @@ This plugin provides common stuff to build redmine plugins that involve Slack/Te
 
 ## Requirements
 
-* Ruby 2.3+
+* Ruby 2.4+
 * Redmine 3.4+
 
 ### Upgrade from 0.2.0 to 0.3+
