@@ -1,6 +1,12 @@
 module RedmineBots
   module Telegram
     class Bot::AuthenticateByToken
+      class MessageNotModifiedError
+        def self.===(e)
+          e.is_a?(::Telegram::Bot::Exceptions::ResponseError) && e.message.include?('message is not modified')
+        end
+      end
+
       def self.call(*args)
         new(*args).call
       end
@@ -14,7 +20,7 @@ module RedmineBots
 
         case @context
         when '2fa_connection'
-          telegram_account = prepare_telegram_account(model_class: Redmine2FA::TelegramConnection)
+          telegram_account = prepare_telegram_account(model_class: RedmineTwoFa::TelegramConnection)
         when 'account_connection'
           telegram_account = prepare_telegram_account(model_class: TelegramAccount)
         else
@@ -24,7 +30,11 @@ module RedmineBots
         return failure(I18n.t('redmine_bots.telegram.bot.login.errors.wrong_account')) unless telegram_account
 
         if telegram_account.save
-          ::RedmineBots::Telegram::Bot::UpdateSignInMessage.(telegram_account, @sign_in_message_id) if @sign_in_message_id
+          begin
+            ::RedmineBots::Telegram::Bot::UpdateSignInMessage.(telegram_account, @sign_in_message_id) if @sign_in_message_id
+          rescue MessageNotModifiedError
+            # skip
+          end
           success(telegram_account)
         else
           failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted'))

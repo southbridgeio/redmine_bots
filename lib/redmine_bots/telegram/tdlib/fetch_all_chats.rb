@@ -3,6 +3,7 @@ module RedmineBots::Telegram::Tdlib
     def initialize(*)
       super
 
+      @chat_list = ChatList::Main.new
       @offset_order = 2**63 - 1
       @offset_chat_id = 0
       @limit = 100
@@ -16,10 +17,10 @@ module RedmineBots::Telegram::Tdlib
     private
 
     attr_reader :limit
-    attr_accessor :offset_order, :offset_chat_id
+    attr_accessor :chat_list, :offset_order, :offset_chat_id
 
     def fetch
-      client.get_chats(offset_chat_id, limit, offset_order: offset_order).then do |update|
+      client.get_chats(chat_list, offset_order, offset_chat_id, limit).then do |update|
         chat_ids = update.chat_ids
         next Concurrent::Promises.fulfilled_future(nil) if chat_ids.empty?
 

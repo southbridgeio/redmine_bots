@@ -16,7 +16,7 @@ module RedmineBots::Telegram::Tdlib
 
         case update.authorization_state
         when AuthorizationState::WaitPhoneNumber
-          promise = client.set_authentication_phone_number(params[:phone_number])
+          promise = client.set_authentication_phone_number(params[:phone_number], nil)
         when AuthorizationState::WaitCode
           promise = client.check_authentication_code(params[:phone_code]) if params[:phone_code]
         when AuthorizationState::Ready

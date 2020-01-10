@@ -27,7 +27,6 @@ namespace :redmine_bots do
       bot = init_bot
       begin
         bot.listen do |message|
-          next unless message.is_a?(Telegram::Bot::Types::Message)
           RedmineBots::Telegram.update_manager.handle_message(message)
         end
       rescue => e

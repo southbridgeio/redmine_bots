@@ -31,6 +31,8 @@ ru:
         bot_use_proxy: Использовать прокси для бота
         proxy_settings: Настройки прокси
         proxy_list: Список прокси
+        proxy_alive: Прокси доступен
+        proxy_dead: Прокси недоступен
     requirements:
       title: Требования
       telegram:

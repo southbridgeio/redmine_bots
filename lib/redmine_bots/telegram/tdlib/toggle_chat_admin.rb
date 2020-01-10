@@ -4,13 +4,16 @@ module RedmineBots::Telegram::Tdlib
       status =
           if admin
             TD::Types::ChatMemberStatus::Administrator.new(
+                can_post_messages: true,
+                can_be_edited: true,
                 can_change_info: true,
                 can_edit_messages: true,
                 can_delete_messages: true,
                 can_invite_users: true,
                 can_restrict_members: true,
                 can_pin_messages: true,
-                can_promote_members: true
+                can_promote_members: true,
+                custom_title: 'Redmine admin'
             )
           else
             TD::Types::ChatMemberStatus::Member.new

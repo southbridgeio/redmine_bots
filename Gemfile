@@ -3,10 +3,10 @@ gem 'sidekiq-cron'
 gem 'sidekiq-rate-limiter', git: 'https://github.com/centosadmin/sidekiq-rate-limiter', branch: 'master',
     require: 'sidekiq-rate-limiter/server'
 
-gem 'telegram-bot-ruby', '~> 0.8.6'
+gem 'telegram-bot-ruby', '>= 0.11', '< 1.0'
 gem 'slack-ruby-bot'
 gem 'celluloid-io'
-gem 'tdlib-ruby', '2.0.0'
+gem 'tdlib-ruby', '2.2.0'
 gem 'jwt'
 gem 'filelock'
 gem 'patron'

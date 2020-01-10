@@ -5,7 +5,7 @@ module RedmineBots::Telegram::Tdlib
         message = TD::Types::InputMessageContent::Text.new(text: TD::Types::FormattedText.new(text: '/start', entities: []),
                                                            disable_web_page_preview: true,
                                                            clear_draft: false)
-        client.send_message(chat.id, message)
+        client.send_message(chat.id, 0, nil, nil, message)
       end.flat
     end
   end

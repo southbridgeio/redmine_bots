@@ -34,7 +34,7 @@ class TelegramLoginController < AccountController
   def handle_auth_result(auth, user)
     if auth.success?
       if user != User.current
-        user.update!(two_fa_id: AuthSource.find_by_name('Telegram').id)
+        user.update!(two_fa: 'telegram')
         successful_authentication(user)
       else
         redirect_to my_page_path, notice: t('redmine_bots.telegram.bot.login.success')

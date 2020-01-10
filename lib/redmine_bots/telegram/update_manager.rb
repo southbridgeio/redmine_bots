@@ -10,7 +10,7 @@ class RedmineBots::Telegram::UpdateManager
   end
 
   def handle_message(message)
-    command_name = message.text.to_s.scan(%r{^/(\w+)}).flatten.first
+    command_name = message.is_a?(Telegram::Bot::Types::Message)? message.text.to_s.scan(%r{^/(\w+)}).flatten.first : ''
     handle_common_command(message) if COMMON_COMMANDS.include?(command_name)
     @handlers.each { |handler| handler.call(message) }
   end
