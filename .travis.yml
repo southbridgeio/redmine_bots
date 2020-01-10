@@ -14,7 +14,10 @@ addons:
 
 env:
   - REDMINE_VER=3.4-stable
-  - REDMINE_VER=4.0-stable
+  - REDMINE_VER=4.1-stable
+
+before_install:
+  - gem install -v 1.6 bundler
 
 install: "echo skip bundle install"
 
