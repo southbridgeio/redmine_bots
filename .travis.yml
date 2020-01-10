@@ -16,6 +16,11 @@ env:
   - REDMINE_VER=3.4-stable
   - REDMINE_VER=4.1-stable
 
+matrix:
+  exclude:
+    - env: REDMINE_VER=3.4-stable
+      rvm: 2.7.0
+
 install: "echo skip bundle install"
 
 before_script:
