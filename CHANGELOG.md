@@ -1,3 +1,19 @@
+# 0.4.0
+
+* Handle Faraday::ClientError in MessageSender
+* Handle deactivated user error in message sender
+* Force ipv4 when using proxy
+* Improve proxy availability check
+* Close supergroups properly
+* Rescue from chat not found errors
+* Increase sleep time for flood error
+* Handle forbidden errors in message sender
+* Use sleep time from error data
+* Add zh-TW locale
+* Handle "message not modified errors"
+* Increase rate limits, add exponential retry
+* Support tdlib 1.6
+
 # 0.3.1
 
 * Fix Rails 4 support
