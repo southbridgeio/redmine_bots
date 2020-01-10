@@ -41,6 +41,8 @@ mv $TESTSPACE/additional_environment.rb config/
 # create a link to the backlogs plugin
 ln -sf $PATH_TO_PLUGIN plugins/$NAME_OF_PLUGIN
 
+gem install -v 1.6 bundler
+
 # install gems
 bundle install
 

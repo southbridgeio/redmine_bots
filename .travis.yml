@@ -16,8 +16,7 @@ env:
   - REDMINE_VER=3.4-stable
   - REDMINE_VER=4.1-stable
 
-install:
-  - gem install -v 1.6 bundler
+install: "echo skip bundle install"
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
