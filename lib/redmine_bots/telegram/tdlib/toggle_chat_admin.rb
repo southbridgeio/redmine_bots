@@ -12,7 +12,8 @@ module RedmineBots::Telegram::Tdlib
                 can_invite_users: true,
                 can_restrict_members: true,
                 can_pin_messages: true,
-                can_promote_members: true
+                can_promote_members: true,
+                custom_title: 'Redmine admin'
             )
           else
             TD::Types::ChatMemberStatus::Member.new
