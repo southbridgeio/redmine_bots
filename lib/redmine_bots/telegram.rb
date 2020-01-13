@@ -33,12 +33,10 @@ module RedmineBots::Telegram
     self_info = {}
 
     if Setting.plugin_redmine_bots['telegram_phone_number'].present?
-      self_info = Tdlib::GetMe.call.rescue do
-        raise 'Please, set correct settings for plugin RedmineBots::Telegram'
-      end.value!.to_h
+      self_info = Tdlib::GetMe.call.rescue { {} }.value!.to_h
     end
 
-    robot_id = self_info['id']
+    robot_id = self_info[:id]
 
     bot      = Telegram::Bot::Client.new(token)
     bot_info = bot.api.get_me['result']
