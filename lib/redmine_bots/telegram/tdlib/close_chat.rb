@@ -17,7 +17,11 @@ module RedmineBots::Telegram::Tdlib
 
     def fetch_robot_ids
       Promises.zip(
-          Promises.future { Setting.find_by(name: 'plugin_redmine_bots').value['telegram_bot_id'].to_i },
+          Promises.future do
+            ActiveRecord::Base.connection_pool.with_connection do
+              Setting.find_by(name: 'plugin_redmine_bots').value['telegram_bot_id'].to_i
+            end
+          end,
           client.get_me.then(&:id)
       )
     end
