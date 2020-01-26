@@ -1,7 +1,6 @@
 gem 'pidfile', git: 'https://github.com/arturtr/pidfile.git'
 gem 'sidekiq-cron'
-gem 'sidekiq-rate-limiter', git: 'https://github.com/centosadmin/sidekiq-rate-limiter', branch: 'master',
-    require: 'sidekiq-rate-limiter/server'
+gem 'sidekiq-rate-limiter', '0.1.3', require: 'sidekiq-rate-limiter/server'
 
 gem 'telegram-bot-ruby', '>= 0.11', '< 1.0'
 gem 'slack-ruby-bot'
