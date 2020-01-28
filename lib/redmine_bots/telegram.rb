@@ -33,26 +33,16 @@ module RedmineBots::Telegram
     self_info = {}
 
     if Setting.plugin_redmine_bots['telegram_phone_number'].present?
-      self_info = Tdlib::GetMe.call.rescue do
-        raise 'Please, set correct settings for plugin RedmineBots::Telegram'
-      end.value!.to_h
+      self_info = Tdlib::GetMe.call.rescue { {} }.value!.to_h
     end
 
-    robot_id = self_info['id']
+    robot_id = self_info[:id]
 
     bot      = Telegram::Bot::Client.new(token)
     bot_info = bot.api.get_me['result']
     bot_name = bot_info['username']
 
-    until bot_name.present?
-      sleep 60
-
-      bot      = Telegram::Bot::Client.new(token)
-      bot_info = bot.api.get_me['result']
-      bot_name = bot_info['username']
-
-      RedmineBots::Telegram::Tdlib::AddBot.(bot_name) if robot_id
-    end
+    RedmineBots::Telegram::Tdlib::AddBot.(bot_name) if robot_id
 
     plugin_settings = Setting.find_by(name: 'plugin_redmine_bots')
 

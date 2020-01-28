@@ -19,7 +19,7 @@ class RedmineTelegramSetupController < ApplicationController
       promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).then do
         RedmineBots::Telegram::Tdlib::FetchAllChats.call
       end.flat.then do
-        save_phone_settings(phone_number: params['phone_number'])
+        ActiveRecord::Base.connection_pool.with_connection { save_phone_settings(phone_number: params['phone_number']) }
         redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_bots.telegram.authorize.success')
       end
 

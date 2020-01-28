@@ -1,3 +1,12 @@
+# 0.4.1
+
+* Fix tdlib proxy
+* Fix AddBot command
+* Fix robot_id detection
+* Release ActiveRecord connections in concurrent-ruby threads
+* Remove ruby 2.7.0 from build matrix
+* Update sidekiq-rate-limiter
+
 # 0.4.0
 
 * Handle Faraday::ClientError in MessageSender
