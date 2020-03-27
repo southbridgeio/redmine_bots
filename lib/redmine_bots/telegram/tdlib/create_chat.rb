@@ -2,8 +2,8 @@ module RedmineBots::Telegram::Tdlib
   class CreateChat < Command
     def call(title, user_ids)
       Promises.zip(*user_ids.map(&client.method(:get_user))).then do
-        client.create_new_basic_group_chat(user_ids, title).then do |chat|
-          client.set_chat_permissions(chat.id, permissions).then { chat }
+        client.create_new_supergroup_chat(title, false, '', nil).then do |chat|
+          client.add_chat_members(chat.id, user_ids).then { client.set_chat_permissions(chat.id, permissions).then { chat } }.flat
         end.flat
       end.flat
     end
