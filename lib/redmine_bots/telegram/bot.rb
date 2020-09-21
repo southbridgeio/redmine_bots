@@ -1,111 +1,76 @@
+# frozen_string_literal: true
+
 require 'telegram/bot'
 
 module RedmineBots::Telegram
   class Bot
-    include BotCommand::Start
-    include BotCommand::Connect
-    include BotCommand::Help
-    include BotCommand::Token
+    class IgnoredError
+      IDENTIFIERS = ['bot was blocked', 'user is deactivated', "bot can't initiate conversation with a user", 'chat not found'].freeze
 
-    attr_reader :bot_token, :logger, :command
-
-    def initialize(bot_token, command, logger = default_logger)
-      @bot_token = bot_token
-      @logger = logger
-      @command = initialize_command(command)
+      def self.===(error)
+        error.is_a?(Telegram::Bot::Exceptions::ResponseError) && IDENTIFIERS.any? { |i| i.in?(error.message) }
+      end
     end
 
-    def call
+    def initialize(api:, throttle:, async_handler_class: AsyncHandler)
+      @api = api
+      @throttle = throttle
+      @async_handler_class = async_handler_class
+      @handlers = Set.new
+    end
+
+    def handle_update(payload)
       RedmineBots::Telegram.set_locale
-      execute_command
+
+      action = UserAction.from_payload(payload)
+      handlers.each { |h| h.call(action: action, bot: self) if h.match?(action) }
     end
 
-    def plugin_name
-      bot_token_setting = Setting.where('value LIKE ?', "%#{bot_token}%").first
-      bot_token_setting.name if bot_token_setting.present?
+    def send_message(chat_id:, **params)
+      handle_errors { throttle.apply(chat_id) { api.send_message(chat_id: chat_id, **params) } }
+    end
+
+    def get_chat(chat_id:)
+      handle_errors { throttle.apply(chat_id) { api.get_chat(chat_id: chat_id) } }
+    end
+
+    def edit_message_text(chat_id:, **params)
+      handle_errors { throttle.apply(chat_id) { api.edit_message_text(chat_id: chat_id, **params) } }
+    end
+
+    def set_webhook
+      webhook_url = "https://#{Setting.host_name}/telegram/api/web_hook/#{webhook_secret}"
+      api.set_webhook(url: webhook_url)
+    end
+
+    def webhook_secret
+      Digest::SHA256.hexdigest(Rails.application.secrets[:secret_key_base])
+    end
+
+    def async
+      async_handler_class.new(self)
+    end
+
+    def register_handler(handler)
+      @handlers << handler
+    end
+
+    def commands
+      handlers.select(&:command?)
     end
 
     private
 
-    def initialize_command(command)
-      command.is_a?(::Telegram::Bot::Types::Message) ? command : ::Telegram::Bot::Types::Message.new(command.to_unsafe_h)
+    attr_reader :api, :throttle, :async_handler_class, :handlers
+
+    def log(message)
+      Rails.logger.tagged(self.class.name) { |logger| logger.info(message) }
     end
 
-    def execute_command
-      return unless available_commands.include?(command_name)
-
-      if private_command?
-        execute_private_command
-      else
-        execute_group_command
-      end
-    end
-
-    def private_command?
-      command.chat.type == 'private'
-    end
-
-    def available_commands
-      (private_commands + group_commands).uniq
-    end
-
-    def execute_private_command
-      if private_commands.include?(command_name)
-        send(command_name)
-      else
-        send_message(I18n.t('redmine_bots.telegram.bot.private.group_command'))
-      end
-    end
-
-    def execute_group_command
-      if group_commands.include?(command_name)
-        send(command_name)
-      else
-        send_message(I18n.t('redmine_bots.telegram.bot.group.private_command'))
-      end
-    end
-
-    def command_text
-      @command_text ||= command.text.to_s
-    end
-
-    def command_name
-      @command_name ||= command_text.scan(%r{^/(\w+)}).flatten.first
-    end
-
-    def send_message(message, params: {})
-      message_params = {
-        chat_id: chat_id,
-        message: message,
-        bot_token: bot_token,
-      }.merge(params)
-
-      logger.debug 'RedmineBots::Telegram::Bot#send_message'
-      logger.debug "chat_id: #{chat_id}"
-      logger.debug "message: #{message}"
-      logger.debug "params: #{params}"
-
-      MessageSender.call(message_params)
-    end
-
-    def chat_id
-      command.chat.id
-    end
-
-    def user
-      @user ||= command.from
-    end
-
-    def account
-      @account ||= fetch_account
-    end
-
-    def fetch_account
-      TelegramAccount.where(telegram_id: user.id).first_or_create
-    end
-
-    def default_logger
-      @logger ||= Logger.new(Rails.root.join('log/redmine_bots', 'bot.log'))
+    def handle_errors
+      yield
+    rescue IgnoredError => e
+      log("Ignored error #{e.class}: #{e.message}")
     end
   end
 end

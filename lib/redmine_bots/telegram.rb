@@ -1,4 +1,27 @@
 module RedmineBots::Telegram
+  BOT_MUTEX = Mutex.new
+  INIT_MUTEX = Mutex.new
+
+  def self.bot
+    BOT_MUTEX.synchronize do
+      @bot ||= Bot.new(api: ::Telegram::Bot::Api.new(Bot::Token.instance),
+                       async_handler_class: Bot::AsyncHandler,
+                       throttle: Bot::NullThrottle.new)
+    end
+  end
+
+  def self.init
+    INIT_MUTEX.synchronize do
+      return if @bot_initialized
+
+      bot.register_handler(Bot::Handlers::StartCommand.new)
+      bot.register_handler(Bot::Handlers::HelpCommand.new)
+      bot.register_handler(Bot::Handlers::ConnectCommand.new)
+
+      @bot_initialized = true
+    end
+  end
+
   def self.set_locale
     I18n.locale = Setting['default_language']
   end
