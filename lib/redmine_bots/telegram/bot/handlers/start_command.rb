@@ -6,10 +6,6 @@ module RedmineBots::Telegram::Bot::Handlers
       true
     end
 
-    def group?
-      false
-    end
-
     def command?
       true
     end

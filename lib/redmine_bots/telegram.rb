@@ -34,10 +34,6 @@ module RedmineBots::Telegram
     Digest::SHA256.hexdigest(Rails.application.secrets[:secret_key_base])
   end
 
-  def self.update_manager
-    @update_manager ||= UpdateManager.new
-  end
-
   def self.tdlib_client
     settings = Setting.find_by_name(:plugin_redmine_bots).value
     TD::Api.set_log_file_path(Rails.root.join('log', 'redmine_bots', 'tdlib.log').to_s)

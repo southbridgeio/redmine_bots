@@ -17,16 +17,27 @@ module RedmineBots::Telegram
       @throttle = throttle
       @async_handler_class = async_handler_class
       @handlers = Set.new
+      @persistent_commands = Set.new
     end
 
     def handle_update(payload)
       RedmineBots::Telegram.set_locale
 
       action = UserAction.from_payload(payload)
+
+      persistent_commands.each do |command_class|
+        command = command_class.retrieve(action.from_id)
+        next unless command
+
+        command.resume!(action: action)
+        return
+      end
+
       handlers.each { |h| h.call(action: action, bot: self) if h.match?(action) }
     end
 
     def send_message(chat_id:, **params)
+      params = { parse_mode: 'HTML', disable_web_page_preview: true }.merge(params)
       handle_errors { throttle.apply(chat_id) { api.send_message(chat_id: chat_id, **params) } }
     end
 
@@ -55,13 +66,17 @@ module RedmineBots::Telegram
       @handlers << handler
     end
 
+    def register_persistent_command(command_class)
+      @persistent_commands << command_class
+    end
+
     def commands
       handlers.select(&:command?)
     end
 
     private
 
-    attr_reader :api, :throttle, :async_handler_class, :handlers
+    attr_reader :api, :throttle, :async_handler_class, :handlers, :persistent_commands
 
     def log(message)
       Rails.logger.tagged(self.class.name) { |logger| logger.info(message) }

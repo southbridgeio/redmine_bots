@@ -7,6 +7,9 @@ class RedmineBots::Telegram::Bot
     delegate :id, to: :from, prefix: true
     delegate :id, to: :user, prefix: true
     delegate :id, to: :chat, prefix: true
+    delegate :title, to: :chat, prefix: true
+
+    attr_reader :message
 
     def self.from_payload(payload)
       new(Telegram::Bot::Types::Update.new(payload).current_message)
@@ -30,8 +33,12 @@ class RedmineBots::Telegram::Bot
       message.is_a?(::Telegram::Bot::Types::Message)
     end
 
+    def callback_query?
+      message.is_a?(::Telegram::Bot::Types::CallbackQuery)
+    end
+
     def text
-      message? ? message.text : ''
+      message? ? message.text.to_s : ''
     end
 
     def command?
@@ -39,7 +46,7 @@ class RedmineBots::Telegram::Bot
     end
 
     def command
-      command? ? message.text.sub('/', '').split : []
+      command? ? [message.text.match(/^\/(\w+)/)[1], message.text.match(/^\/\w+ (.+)$/).try(:[], 1)] : []
     end
 
     def private?
@@ -53,9 +60,5 @@ class RedmineBots::Telegram::Bot
     def user
       telegram_account.user || User.anonymous
     end
-
-    private
-
-    attr_reader :message
   end
 end
