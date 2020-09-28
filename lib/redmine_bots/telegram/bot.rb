@@ -5,7 +5,7 @@ require 'telegram/bot'
 module RedmineBots::Telegram
   class Bot
     class IgnoredError
-      IDENTIFIERS = ['bot was blocked', 'user is deactivated', "bot can't initiate conversation with a user", 'chat not found'].freeze
+      IDENTIFIERS = ['bot was blocked', 'bot was kicked', 'user is deactivated', "bot can't initiate conversation with a user", 'chat not found'].freeze
 
       def self.===(error)
         error.is_a?(Telegram::Bot::Exceptions::ResponseError) && IDENTIFIERS.any? { |i| i.in?(error.message) }

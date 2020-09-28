@@ -4,7 +4,7 @@ class RedmineBots::Telegram::Bot
   class UserAction
     delegate :from, to: :message
     delegate :chat, to: :message
-    delegate :id, to: :from, prefix: true
+    delegate :id, to: :from, prefix: true, allow_nil: true
     delegate :id, to: :user, prefix: true
     delegate :id, to: :chat, prefix: true
     delegate :title, to: :chat, prefix: true
