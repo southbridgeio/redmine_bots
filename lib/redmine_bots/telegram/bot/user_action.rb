@@ -58,7 +58,7 @@ class RedmineBots::Telegram::Bot
     end
 
     def user
-      telegram_account.user || User.anonymous
+      telegram_account&.user || User.anonymous
     end
   end
 end
