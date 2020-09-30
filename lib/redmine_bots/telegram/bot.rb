@@ -12,12 +12,15 @@ module RedmineBots::Telegram
       end
     end
 
+    attr_accessor :default_keyboard
+
     def initialize(api:, throttle:, async_handler_class: AsyncHandler)
       @api = api
       @throttle = throttle
       @async_handler_class = async_handler_class
       @handlers = Set.new
       @persistent_commands = Set.new
+      self.default_keyboard = ::Telegram::Bot::Types::ReplyKeyboardRemove.new(remove_keyboard: true)
     end
 
     def handle_update(payload)
@@ -79,7 +82,7 @@ module RedmineBots::Telegram
     attr_reader :api, :throttle, :async_handler_class, :handlers, :persistent_commands
 
     def log(message)
-      Rails.logger.tagged(self.class.name) { |logger| logger.info(message) }
+      Rails.logger.info("RedmineBots: #{message}")
     end
 
     def handle_errors

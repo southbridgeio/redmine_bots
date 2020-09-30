@@ -27,13 +27,11 @@ module RedmineBots::Telegram::Bot::Handlers
     end
 
     def call(bot:, action:)
-      commands = action.private? ? bot.commands.select(&:private?) : bot.commands.select(&:group?)
+      message = RedmineBots::Telegram::Bot::HelpMessage.new(bot, action).to_s
 
-      message = commands.select { |command| command.allowed?(action.user) }.map do |command|
-        %[/#{command.name} - #{command.description}].chomp
-      end.join("\n")
+      keyboard = action.user ? bot.default_keyboard : ::Telegram::Bot::Types::ReplyKeyboardRemove.new(remove_keyboard: true)
 
-      bot.async.send_message(chat_id: action.chat_id, text: message)
+      bot.async.send_message(chat_id: action.chat_id, text: message, reply_markup: keyboard.to_json)
     end
   end
 end

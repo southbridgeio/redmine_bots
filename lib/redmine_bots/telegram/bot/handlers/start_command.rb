@@ -25,7 +25,8 @@ module RedmineBots::Telegram::Bot::Handlers
     def call(bot:, action:)
       message = action.user ? hello_message : instruction_message
 
-      bot.async.send_message(chat_id: action.chat_id, text: message)
+      keyboard = action.user ? bot.default_keyboard : ::Telegram::Bot::Types::ReplyKeyboardRemove.new(remove_keyboard: true)
+      bot.async.send_message(chat_id: action.chat_id, text: message, reply_markup: keyboard.to_json)
     end
 
     private
