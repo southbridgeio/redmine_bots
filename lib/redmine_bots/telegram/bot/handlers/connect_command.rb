@@ -23,7 +23,7 @@ module RedmineBots::Telegram::Bot::Handlers
     end
 
     def call(bot:, action:)
-      if action.user.registered?
+      if action.user.active?
         message = I18n.t('redmine_bots.telegram.bot.connect.already_connected')
       else
         message = I18n.t('redmine_bots.telegram.bot.connect.login_link', link: "#{Setting.protocol}://#{Setting.host_name}/telegram/login")
