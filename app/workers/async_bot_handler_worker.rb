@@ -1,6 +1,8 @@
 class AsyncBotHandlerWorker
   include Sidekiq::Worker
 
+  sidekiq_options queue: :telegram
+
   def perform(method, args)
     RedmineBots::Telegram.set_locale
 
