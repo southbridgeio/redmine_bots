@@ -2,6 +2,7 @@ module RedmineBots::Telegram
   BOT_MUTEX = Mutex.new
   INIT_MUTEX = Mutex.new
 
+  # @return [Bot]
   def self.bot
     BOT_MUTEX.synchronize do
       @bot ||= Bot.new(api: ::Telegram::Bot::Api.new(Bot::Token.instance),

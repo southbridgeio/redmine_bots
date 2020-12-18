@@ -7,5 +7,9 @@ class RedmineBots::Telegram::Bot
     def send_message(*args)
       AsyncBotHandlerWorker.perform_async('send_message', *args)
     end
+
+    def promote_chat_member(*args)
+      AsyncBotHandlerWorker.perform_async('promote_chat_member', *args)
+    end
   end
 end
