@@ -41,14 +41,14 @@ class RedmineTelegramSetupController < ApplicationController
     bot = RedmineBots::Telegram.init_bot
     bot.api.setWebhook(url: web_hook_url)
 
-    redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_chat_telegram.bot.authorize.success')
+    redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_2chat.bot.authorize.success')
   end
 
   def bot_deinit
     token = Setting.plugin_redmine_bots['telegram_bot_token']
     bot   = Telegram::Bot::Client.new(token)
     bot.api.setWebhook(url: '')
-    redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_chat_telegram.bot.deauthorize.success')
+    redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_2chat.bot.deauthorize.success')
   end
 
   private
