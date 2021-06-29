@@ -5,11 +5,9 @@ class TelegramAccountsRefreshWorker
 
   def perform
     TelegramAccount.where.not(telegram_id: nil).find_each do |account|
-      RedmineBots::Telegram::Tdlib::GetUser.(account.telegram_id).then do |user|
-        ActiveRecord::Base.connection_pool.with_connection do
-          account.update_attributes(user.to_h.slice(*%w[username first_name last_name]))
-        end
-      end.wait
+      new_data = RedmineBots::Telegram.bot.get_chat(chat_id: account.telegram_id)
+      account.update(**new_data['result'].slice('username', 'first_name', 'last_name').symbolize_keys)
+      sleep 1
     end
   end
 end

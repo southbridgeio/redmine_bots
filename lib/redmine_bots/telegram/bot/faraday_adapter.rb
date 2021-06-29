@@ -38,15 +38,15 @@ module RedmineBots::Telegram
       @app.call env
     rescue ::Patron::TimeoutError => err
       if connection_timed_out_message?(err.message)
-        raise Faraday::Error::ConnectionFailed, err
+        raise Faraday::ConnectionFailed, err
       else
-        raise Faraday::Error::TimeoutError, err
+        raise Faraday::TimeoutError, err
       end
     rescue ::Patron::Error => err
       if err.message.include?("code 407")
-        raise Faraday::Error::ConnectionFailed, %{407 "Proxy Authentication Required "}
+        raise Faraday::ConnectionFailed, %{407 "Proxy Authentication Required "}
       else
-        raise Faraday::Error::ConnectionFailed, err
+        raise Faraday::ConnectionFailed, err
       end
     end
 
