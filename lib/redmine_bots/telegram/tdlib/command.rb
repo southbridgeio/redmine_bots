@@ -14,12 +14,12 @@ module RedmineBots::Telegram::Tdlib
 
     class << self
       def call(*args)
-        Filelock Rails.root.join('tmp', 'redmine_bots', 'tdlib_lock'), wait: 10 do
+        Filelock(Rails.root.join('tmp', 'redmine_bots', 'tdlib_lock'), wait: 10) do
           begin
             client = RedmineBots::Telegram.tdlib_client
             new(client).call(*args).wait
           ensure
-            client.dispose
+            client.dispose if defined?(client) && client
           end
         end
       end
@@ -48,17 +48,6 @@ module RedmineBots::Telegram::Tdlib
 
     def connect
       client.connect
-
-      settings = Setting.find_by_name(:plugin_redmine_bots).value
-
-      if settings['tdlib_use_proxy'] && proxy = TelegramProxy.alive.socks5.first
-        type = TD::Types::ProxyType::Socks5.new(username: proxy.user, password: proxy.password)
-        client.add_proxy(proxy.host, proxy.port, false, type).then do |td_proxy|
-          client.enable_proxy(td_proxy.id)
-        end.flat.then { client.ready }
-      else
-        client.ready
-      end
     end
   end
 end

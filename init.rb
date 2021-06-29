@@ -16,11 +16,6 @@ reloader.to_prepare do
   Dir.glob(File.dirname(__FILE__) + paths).each do |file|
     require_dependency file
   end
-  Faraday::Adapter.register_middleware redmine_bots: RedmineBots::Telegram::Bot::FaradayAdapter
-
-  Telegram::Bot.configure do |config|
-    config.adapter = :redmine_bots
-  end
 end
 
 Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")

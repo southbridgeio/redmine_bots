@@ -19,17 +19,17 @@
     <th><%= t 'redmine_bots.requirements.telegram.description' %></th>
   </tr>
   </thead>
-  <tr>
-    <td>TDlib</td>
-    <td>
-      <% if tdlib_path = (TD::Api::Dl.find_lib rescue nil) %>
-      <%= t 'redmine_bots.requirements.yes' %>
-      <% else %>
-      <%= t 'redmine_bots.requirements.no' %>
-      <% end %>
-    </td>
-    <td><%= tdlib_path || t('redmine_bots.requirements.telegram.tdlib_installation').html_safe %></td>
-  </tr>
+<!--  <tr>-->
+<!--    <td>TDlib</td>-->
+<!--    <td>-->
+      <%# if tdlib_path = (TD::Api::Dl.find_lib rescue nil) %>
+      <%#= t 'redmine_bots.requirements.yes' %>
+      <%# else %>
+      <%#= t 'redmine_bots.requirements.no' %>
+      <%# end %>
+<!--    </td>-->
+<!--    <td><%#= tdlib_path || t('redmine_bots.requirements.telegram.tdlib_installation').html_safe %></td>-->
+<!--  </tr>-->
 </table>
 
 <p>
@@ -53,25 +53,6 @@
 <p>
   <a target="_blank" href ="https://my.telegram.org/apps">API ID and API Hash can be obtained here</a>
 </p>
-
-<hr>
-
-<h3><%= t 'redmine_bots.settings.telegram.proxy_settings' %></h3>
-
-<p>
-  <label>
-    <%= t 'redmine_bots.settings.telegram.tdlib_use_proxy' %>
-  </label>
-  <%= check_box_tag 'settings[tdlib_use_proxy]', '1', @settings['tdlib_use_proxy'] %>
-<p>
-  <label>
-    <%= t 'redmine_bots.settings.telegram.bot_use_proxy' %>
-  </label>
-  <%= check_box_tag 'settings[bot_use_proxy]', '1', @settings['bot_use_proxy'] %>
-</p>
-
-  <%= link_to t('redmine_bots.settings.telegram.proxy_list'), telegram_proxies_path, remote: true %>
-
 
 <hr>
 

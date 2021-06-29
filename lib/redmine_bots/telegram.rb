@@ -45,7 +45,7 @@ module RedmineBots::Telegram
         files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
     }
 
-    TD::Client.new(**config)
+    TD::Client.new(timeout: 300, **config)
   end
 
   def self.init_bot

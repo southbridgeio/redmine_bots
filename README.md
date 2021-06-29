@@ -27,21 +27,6 @@ Telegram support includes:
 * Common client commands that utilize [tdlib-ruby](https://github.com/centosadmin/tdlib-ruby)
 * [Telegram Login](https://core.telegram.org/widgets/login) to connect Redmine and Telegram accounts
 
-
-### Proxy
-
-You can set proxy pool on plugin settings page. Proxies are gonna be monitored for availability, and first working proxy will be taken for every request.
-
-Proxy format is same to curl:
-
-```bash
-http://user:password@127.0.0.1:3128
-socks5://user:password@127.0.0.1:9050
-```
-
-Only SOCKS5 and HTTP proxies are supported.
-Note that tdlib supports only SOCKS5 proxies, so you should add at least one SOCKS5 proxy if you want tdlib to be proxied.
-
 ### Tdlib
 In order to use tdlib client you need compiled [TDLib](https://github.com/tdlib/td).
 
