@@ -1,3 +1,10 @@
+# 0.5.0
+
+* Use supergroup chats
+* Refactor telegram commands
+* Support persistent commands
+* Update tdlib, remove proxy support
+
 # 0.4.1
 
 * Fix tdlib proxy
