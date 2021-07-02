@@ -16,11 +16,6 @@ reloader.to_prepare do
   Dir.glob(File.dirname(__FILE__) + paths).each do |file|
     require_dependency file
   end
-  Faraday::Adapter.register_middleware redmine_bots: RedmineBots::Telegram::Bot::FaradayAdapter
-
-  Telegram::Bot.configure do |config|
-    config.adapter = :redmine_bots
-  end
 end
 
 Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
@@ -34,7 +29,7 @@ Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/southbridgeio/redmine_bots'
   description 'This is a platform for building Redmine bots'
-  version '0.4.1'
+  version '0.5.0'
   author 'Southbridge'
   author_url 'https://github.com/southbridgeio'
 
@@ -51,3 +46,5 @@ Redmine::Plugin.register :redmine_bots do
 
   permission :view_telegram_account_info, {}
 end
+
+RedmineBots::Telegram.init

@@ -14,7 +14,7 @@ ru:
       telegram:
         phone_number: "Номер телефона"
         phone_number_hint: "В формате: 78005553535"
-        phone_code: "Код телеграмма"
+        phone_code: "Код из Telegram"
         authorize_button_code: "Получить код авторизации"
         authorize_client: "Авторизовать клиент Telegram"
         authorize_hint: "Чтобы авторизировать Telegram, нажмите кнопку ниже. Текущая авторизация сбросится."

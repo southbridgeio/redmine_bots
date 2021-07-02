@@ -1,4 +1,28 @@
 module RedmineBots::Telegram
+  BOT_MUTEX = Mutex.new
+  INIT_MUTEX = Mutex.new
+
+  # @return [Bot]
+  def self.bot
+    BOT_MUTEX.synchronize do
+      @bot ||= Bot.new(api: ::Telegram::Bot::Api.new(Bot::Token.instance),
+                       async_handler_class: Bot::AsyncHandler,
+                       throttle: Bot::NullThrottle.new)
+    end
+  end
+
+  def self.init
+    INIT_MUTEX.synchronize do
+      return if @bot_initialized
+
+      bot.register_handler(Bot::Handlers::StartCommand.new)
+      bot.register_handler(Bot::Handlers::HelpCommand.new)
+      bot.register_handler(Bot::Handlers::ConnectCommand.new)
+
+      @bot_initialized = true
+    end
+  end
+
   def self.set_locale
     I18n.locale = Setting['default_language']
   end
@@ -11,10 +35,6 @@ module RedmineBots::Telegram
     Digest::SHA256.hexdigest(Rails.application.secrets[:secret_key_base])
   end
 
-  def self.update_manager
-    @update_manager ||= UpdateManager.new
-  end
-
   def self.tdlib_client
     settings = Setting.find_by_name(:plugin_redmine_bots).value
     TD::Api.set_log_file_path(Rails.root.join('log', 'redmine_bots', 'tdlib.log').to_s)
@@ -25,7 +45,7 @@ module RedmineBots::Telegram
         files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
     }
 
-    TD::Client.new(**config)
+    TD::Client.new(timeout: 300, **config)
   end
 
   def self.init_bot

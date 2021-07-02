@@ -20,12 +20,12 @@ module RedmineBots::Telegram::Tdlib
     attr_accessor :chat_list, :offset_order, :offset_chat_id
 
     def fetch
-      client.get_chats(chat_list, offset_order, offset_chat_id, limit).then do |update|
+      client.get_chats(chat_list: chat_list, offset_order: offset_order, offset_chat_id: offset_chat_id, limit: limit).then do |update|
         chat_ids = update.chat_ids
         next Concurrent::Promises.fulfilled_future(nil) if chat_ids.empty?
 
-        client.get_chat(chat_ids.last).then do |chat|
-          self.offset_chat_id, self.offset_order = chat.id, chat.order
+        client.get_chat(chat_id: chat_ids.last).then do |chat|
+          self.offset_chat_id, self.offset_order = chat.id, chat.positions.find { |p| p.list.is_a?(ChatList::Main) }.order
           fetch.wait!
         end.flat
       end.flat
