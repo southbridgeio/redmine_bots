@@ -8,6 +8,8 @@ class TelegramAccountsRefreshWorker
       new_data = RedmineBots::Telegram.bot.get_chat(chat_id: account.telegram_id)
       account.update(**new_data['result'].slice('username', 'first_name', 'last_name').symbolize_keys)
       sleep 1
+    rescue => e
+      logger.warn("Error during telegram accounts refresh: #{e.message}")
     end
   end
 end
