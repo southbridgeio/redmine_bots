@@ -9,6 +9,7 @@ This plugin provides common stuff to build redmine plugins that involve Slack/Te
 
 * Ruby 2.4+
 * Redmine 3.4+
+* [redmine_sidekiq](https://github.com/southbridgeio/redmine_sidekiq) (also requires Redis)
 
 ### Upgrade from 0.2.0 to 0.3+
 
