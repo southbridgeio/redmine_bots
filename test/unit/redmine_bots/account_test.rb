@@ -2,7 +2,7 @@ require File.expand_path('../../../test_helper', __FILE__)
 
 class TelegramAccountTest < ActiveSupport::TestCase
   def setup
-    @telegram_account = TelegramAccount.new first_name: 'John', last_name: 'Smith'
+    @telegram_account = TelegramAccount.new first_name: 'John', last_name: 'Smith', telegram_id: 999_999_999_999
   end
 
   def test_name_without_username
