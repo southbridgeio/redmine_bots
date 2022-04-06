@@ -1,3 +1,7 @@
+# 0.5.1
+
+* Fix problem with telegram_id exceeding int.
+
 # 0.5.0
 
 * Use supergroup chats
