@@ -29,7 +29,7 @@ Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/southbridgeio/redmine_bots'
   description 'This is a platform for building Redmine bots'
-  version '0.5.0'
+  version '0.5.1'
   author 'Southbridge'
   author_url 'https://github.com/southbridgeio'
 
