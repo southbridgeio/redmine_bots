@@ -6,19 +6,25 @@ FileUtils.mkdir_p(tmp_dir) unless Dir.exist?(tmp_dir)
 
 require 'telegram/bot'
 
-# Rails 5.1/Rails 4
-reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
-reloader.to_prepare do
-  require_dependency 'redmine_bots/telegram'
+if Gem::Version.new(Redmine::VERSION.to_s) < Gem::Version.new('5.0')
+  # Rails 5.1/Rails 4
+  reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
+  reloader.to_prepare do
+    require_dependency 'redmine_bots/telegram'
 
+    paths = '/lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}.rb'
+
+    Dir.glob(File.dirname(__FILE__) + paths).each do |file|
+      require_dependency file
+    end
+  end
+  Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
+else
   paths = '/lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}.rb'
-
   Dir.glob(File.dirname(__FILE__) + paths).each do |file|
-    require_dependency file
+    require file
   end
 end
-
-Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
 
 Sidekiq::Logging.logger = Logger.new(Rails.root.join('log', 'sidekiq.log'))
 Sidekiq::Cron::Job.create(name:  'Telegram proxy monitoring',
