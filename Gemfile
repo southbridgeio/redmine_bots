@@ -10,6 +10,7 @@ gem 'tdlib-schema', git: 'https://github.com/southbridgeio/tdlib-schema', branch
 gem 'jwt'
 gem 'filelock'
 gem 'patron'
+gem 'dry-configurable', '0.15.0'
 
 group :test do
   gem 'timecop'
