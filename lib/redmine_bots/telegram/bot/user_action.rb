@@ -8,6 +8,7 @@ class RedmineBots::Telegram::Bot
     delegate :id, to: :user, prefix: true
     delegate :id, to: :chat, prefix: true
     delegate :title, to: :chat, prefix: true
+    delegate :message_id, to: :message
 
     attr_reader :message
 
