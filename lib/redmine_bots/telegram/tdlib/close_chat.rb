@@ -40,11 +40,12 @@ module RedmineBots::Telegram::Tdlib
     end
 
     def close_super_group(chat_type)
-      client.delete_supergroup(supergroup_id: chat_type.supergroup_id)
+      # this method is gone in the latest version of tdlib, so we need to find a workaround
+      # client.delete_supergroup(supergroup_id: chat_type.supergroup_id)
     end
 
     def delete_member(chat_id, user_id)
-      client.set_chat_member_status(chat_id: chat_id, user_id: user_id, status: ChatMemberStatus::Left.new)
+      client.set_chat_member_status(chat_id: chat_id, member_id: user_id, status: ChatMemberStatus::Left.new)
     end
   end
 end
