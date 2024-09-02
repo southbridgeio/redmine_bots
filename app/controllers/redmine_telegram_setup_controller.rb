@@ -14,6 +14,16 @@ class RedmineTelegramSetupController < ApplicationController
     end
   end
 
+  def step_3
+    RedmineBots::Telegram::Tdlib.wrap do
+      promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).rescue do |error|
+        redirect_to plugin_settings_path('redmine_bots'), alert: error.message
+      end
+
+      RedmineBots::Telegram::Tdlib.permit_concurrent_loads { promise.wait! }
+    end
+  end
+
   def authorize
     RedmineBots::Telegram::Tdlib.wrap do
       promise = RedmineBots::Telegram::Tdlib::Authenticate.(params).then do

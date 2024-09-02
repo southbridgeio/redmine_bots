@@ -15,13 +15,16 @@ ru:
         phone_number: "Номер телефона"
         phone_number_hint: "В формате: 78005553535"
         phone_code: "Код из Telegram"
+        password: "Пароль из Telegram"
+        password_hint: "Если у вас не включена двухфакторная аутентификация в приложении Telegram, нажмите кнопку «Авторизовать»."
         authorize_button_code: "Получить код авторизации"
         authorize_client: "Авторизовать клиент Telegram"
         authorize_hint: "Чтобы авторизировать Telegram, нажмите кнопку ниже. Текущая авторизация сбросится."
         authorize_button: "Авторизовать"
         plugin_link: "К настройкам плагина"
         auth_step_1: "Получение кода авторизации"
-        auth_step_2: "Авторизация"
+        auth_step_2: "Авторизация кода"
+        auth_step_3: "Авторизация пароля"
         reset: "Сбросить кеш и авторизацию"
         bot_init: Инициализировать бота
         bot_deinit: Деинициализировать бота

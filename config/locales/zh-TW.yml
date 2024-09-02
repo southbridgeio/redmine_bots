@@ -14,13 +14,16 @@ zh-TW:
         phone_number: "電話號碼"
         phone_number_hint: "以台灣手機 0912-345-678 為例，需輸入：886912345678"
         phone_code: "Telegram 代碼"
+        password: "Telegram 密碼"
+        password_hint: "如果您沒有在 Telegram 應用程式中啟用雙重認證，請按一下「授權」按鈕。"
         authorize_button_code: "接收代碼"
         authorize_button: "授權"
         authorize_client: "授權給 Telegram 用戶端"
         authorize_hint: "請按下面的按鈕授權給 Telegram。目前的授權則會被清除。"
         plugin_link: "回到外掛設定"
         auth_step_1: "接收 Telegram 代碼"
-        auth_step_2: "授權"
+        auth_step_2: "代碼授權"
+        auth_step_3: "密碼授權"
         reset: "重設快取及授權"
         bot_init: 初始化機器人
         bot_deinit: 停用機器人
