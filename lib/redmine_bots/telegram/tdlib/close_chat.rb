@@ -6,7 +6,7 @@ module RedmineBots::Telegram::Tdlib
         when TD::Types::ChatType::BasicGroup
           fetch_robot_ids.then { |*robot_ids| close_basic_group(chat, robot_ids) }.flat
         when TD::Types::ChatType::Supergroup
-          close_super_group(chat.type)
+          close_super_group(chat.id)
         else
           raise 'Unsupported chat type'
         end
@@ -39,12 +39,12 @@ module RedmineBots::Telegram::Tdlib
       end.flat
     end
 
-    def close_super_group(chat_type)
-      client.delete_supergroup(supergroup_id: chat_type.supergroup_id)
+    def close_super_group(chat_id)
+      client.delete_chat(chat_id: chat_id)
     end
 
     def delete_member(chat_id, user_id)
-      client.set_chat_member_status(chat_id: chat_id, user_id: user_id, status: ChatMemberStatus::Left.new)
+      client.set_chat_member_status(chat_id: chat_id, member_id: user_id, status: ChatMemberStatus::Left.new)
     end
   end
 end
