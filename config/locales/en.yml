@@ -14,13 +14,16 @@ en:
         phone_number: "Phone Number"
         phone_number_hint: "Format: 78005553535"
         phone_code: "Telegram code"
+        password: "Telegram password"
+        password_hint: "If you do not have two-factor authentication enabled in the Telegram application, click the «Authorize» button."
         authorize_button_code: "Receive code"
         authorize_button: "Authorize"
         authorize_client: "Authorize Telegram client"
         authorize_hint: "To authorize Telegram, press the button below. Current authorization will be drop."
         plugin_link: "Back to the plugin settings"
         auth_step_1: "Receiving Telegram code"
-        auth_step_2: "Authorization"
+        auth_step_2: "Code authorization"
+        auth_step_3: "Password authorization"
         reset: "Reset cache and authorization"
         bot_init: Initialize bot
         bot_deinit: Deinitialize bot

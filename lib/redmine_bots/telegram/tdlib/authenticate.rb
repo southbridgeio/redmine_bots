@@ -19,11 +19,11 @@ module RedmineBots::Telegram::Tdlib
           promise = client.set_authentication_phone_number(phone_number: params[:phone_number], settings: nil)
         when AuthorizationState::WaitCode
           promise = client.check_authentication_code(code: params[:phone_code]) if params[:phone_code]
+        when AuthorizationState::WaitPassword
+          promise = client.check_authentication_password(password: params[:password]) if params[:password]
         when AuthorizationState::Ready
-          puts 'lok'
           promise = Promises.fulfilled_future(true)
         else
-          puts update.authorization_state
           next
         end
 

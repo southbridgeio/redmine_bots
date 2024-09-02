@@ -1,9 +1,9 @@
 <h2><%= t 'redmine_bots.settings.telegram.authorize_client' %></h2>
 <hr>
-<p><%= link_to telegram_setup_1_path do %>1. <%= t 'redmine_bots.settings.telegram.auth_step_1' %><% end %> — <strong>2. <%= t 'redmine_bots.settings.telegram.auth_step_2' %></strong></p>
+<p><%= link_to telegram_setup_1_path do %>1. <%= t 'redmine_bots.settings.telegram.auth_step_1' %><% end %> — <strong>2. <%= t 'redmine_bots.settings.telegram.auth_step_2' %></strong> — 3. <%= t 'redmine_bots.settings.telegram.auth_step_3' %></p>
 <hr>
 
-<%= form_tag telegram_setup_authorize_path, method: :post do %>
+<%= form_tag telegram_setup_3_path, method: :post do %>
   <p>
     <label>
       <%= t 'redmine_bots.settings.telegram.phone_code' %>

@@ -39,13 +39,25 @@ module RedmineBots::Telegram
     settings = Setting.find_by_name(:plugin_redmine_bots).value
     TD::Api.set_log_file_path(Rails.root.join('log', 'redmine_bots', 'tdlib.log').to_s)
     config = {
-        api_id: settings['telegram_api_id'],
-        api_hash: settings['telegram_api_hash'],
-        database_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'db').to_s,
-        files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
+      api_id: settings['telegram_api_id'],
+      api_hash: settings['telegram_api_hash'],
+      use_test_dc: false,
+      database_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'db').to_s,
+      files_directory: Rails.root.join('tmp', 'redmine_bots', 'tdlib', 'files').to_s,
+      use_file_database: true,
+      use_chat_info_database: true,
+      use_secret_chats: true,
+      use_message_database: true,
+      system_language_code: 'en',
+      device_model: 'Ruby TD client',
+      system_version: 'Unknown',
+      application_version: '1.0',
     }
 
-    TD::Client.new(timeout: 300, **config)
+    client = TD::Client.new(timeout: 300, **config)
+    client.set_tdlib_parameters(**config)
+
+    client
   end
 
   def self.init_bot

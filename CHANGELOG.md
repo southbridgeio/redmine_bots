@@ -1,3 +1,12 @@
+# 0.5.3
+
+* Add step 3 to Telegram client authorization
+* Adapt tdlib commands for new version
+
+# 0.5.2
+
+* Merge old 'update' branch
+
 # 0.5.1
 
 * Fix problem with telegram_id exceeding int.
