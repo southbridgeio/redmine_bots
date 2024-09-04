@@ -1,3 +1,8 @@
+# 0.5.4
+
+* Fix set bot permissions
+* Remove Sidekiq Cron job for Telegram proxy worker
+
 # 0.5.3
 
 * Add step 3 to Telegram client authorization

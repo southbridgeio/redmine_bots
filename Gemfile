@@ -5,7 +5,7 @@ gem 'sidekiq-rate-limiter', '0.1.3', require: 'sidekiq-rate-limiter/server'
 gem 'telegram-bot-ruby', '>= 0.11', '< 1.0'
 gem 'slack-ruby-bot'
 gem 'celluloid-io'
-gem 'tdlib-ruby', git: 'https://github.com/southbridgeio/tdlib-ruby', tag: "v3.0.3"
+gem 'tdlib-ruby', git: 'https://github.com/southbridgeio/tdlib-ruby', tag: "v3.0.4"
 gem 'tdlib-schema', git: 'https://github.com/southbridgeio/tdlib-schema'
 gem 'jwt'
 gem 'filelock'
