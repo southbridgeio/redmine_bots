@@ -11,7 +11,7 @@ module RedmineBots::Telegram::Tdlib
         else
           TD::Types::ChatMemberStatus::Member.new
         end
-      client.get_user(user_id: user_id).then { client.set_chat_member_status(chat_id: chat_id, member_id: user_id, status: status) }.flat
+      client.get_user(user_id: user_id).then { client.set_chat_member_status(chat_id: chat_id, member_id: message_sender(user_id), status: status) }.flat
     end
 
     private
@@ -34,6 +34,10 @@ module RedmineBots::Telegram::Tdlib
         can_delete_stories: false,
         is_anonymous: false
       )
+    end
+
+    def message_sender(user_id)
+      TD::Types::MessageSender::User.new(user_id: user_id)
     end
   end
 end

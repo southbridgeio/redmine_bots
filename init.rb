@@ -21,9 +21,6 @@ end
 Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
 
 Sidekiq::Logging.logger = Logger.new(Rails.root.join('log', 'sidekiq.log'))
-Sidekiq::Cron::Job.create(name:  'Telegram proxy monitoring',
-                          cron:  '*/3 * * * *',
-                          class: 'TelegramProxyMonitoringWorker')
 
 Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
