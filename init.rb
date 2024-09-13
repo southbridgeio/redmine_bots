@@ -6,11 +6,14 @@ FileUtils.mkdir_p(tmp_dir) unless Dir.exist?(tmp_dir)
 
 require 'telegram/bot'
 
-# Rails 5.1/Rails 4
-reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
-reloader.to_prepare do
-  require_dependency 'redmine_bots/telegram'
-
+register_after_redmine_initialize_proc =
+  if Redmine::VERSION::MAJOR >= 5
+    Rails.application.config.public_method(:after_initialize)
+  else
+    reloader = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
+    reloader.public_method(:to_prepare)
+  end
+register_after_redmine_initialize_proc.call do
   paths = '/lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}.rb'
 
   Dir.glob(File.dirname(__FILE__) + paths).each do |file|

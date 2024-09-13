@@ -31,7 +31,7 @@ module RedmineBots::Telegram::Tdlib
           promise.then do |res|
             result = res
             condition.broadcast
-          end.on_error do |err|
+          end.rescue do |err|
             error = err
             condition.broadcast
           end
