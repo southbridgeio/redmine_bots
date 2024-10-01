@@ -1,3 +1,7 @@
+# 0.5.5
+
+* Add functionality for processing photos from telegram
+
 # 0.5.4
 
 * Fix set bot permissions
