@@ -39,7 +39,23 @@ class RedmineBots::Telegram::Bot
     end
 
     def text
-      message? ? message.text.to_s : ''
+      if message? && !message.media_group_id
+        if has_photo?
+          message.caption.to_s
+        else
+          message.text.to_s
+        end
+      else
+        ''
+      end
+    end
+
+    def photo
+      message.photo.max_by { |photo| photo.file_size }
+    end
+
+    def has_photo?
+      message.photo.present? && !message.media_group_id
     end
 
     def command?

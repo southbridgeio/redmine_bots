@@ -56,6 +56,10 @@ module RedmineBots::Telegram
       handle_errors { throttle.apply(chat_id) { api.promote_chat_member(chat_id: chat_id, **params) } }
     end
 
+    def get_file(chat_id:, file_id:)
+      handle_errors { throttle.apply(chat_id) { api.get_file(file_id: file_id) } }
+    end
+
     def set_webhook
       webhook_url = "https://#{Setting.host_name}/telegram/api/web_hook/#{webhook_secret}"
       api.set_webhook(url: webhook_url)
