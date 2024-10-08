@@ -52,6 +52,9 @@ class RedmineTelegramSetupController < ApplicationController
     bot.api.setWebhook(url: web_hook_url)
 
     redirect_to plugin_settings_path('redmine_bots'), notice: t('redmine_2chat.bot.authorize.success')
+
+  rescue Telegram::Bot::Exceptions::ResponseError => error
+    redirect_to plugin_settings_path('redmine_bots'), alert: parsed_error(error)['description']
   end
 
   def bot_deinit
@@ -65,5 +68,9 @@ class RedmineTelegramSetupController < ApplicationController
 
   def save_phone_settings(phone_number:)
     Setting.send('plugin_redmine_bots=', Setting.plugin_redmine_bots.merge({'telegram_phone_number' => phone_number.to_s}).to_h)
+  end
+
+  def parsed_error(error)
+    JSON.parse(error.response.body)
   end
 end

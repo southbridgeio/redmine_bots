@@ -1,3 +1,8 @@
+# 0.5.6
+
+* Add compatibility with Redmine 5.1
+* Fix showing errors
+
 # 0.5.5
 
 * Add functionality for processing photos from telegram
