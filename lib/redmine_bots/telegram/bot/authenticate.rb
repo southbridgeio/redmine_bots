@@ -28,10 +28,14 @@ module RedmineBots
           return failure('Invalid context')
         end
 
-        if telegram_account.save
-          success(telegram_account)
-        else
+        TelegramAccount.transaction do
+          next failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted')) unless telegram_account.save
+
+          next success(telegram_account) if create_account_after_2fa(telegram_account)
+
           failure(I18n.t('redmine_bots.telegram.bot.login.errors.not_persisted'))
+
+          raise ActiveRecord::Rollback
         end
       end
 
@@ -42,7 +46,7 @@ module RedmineBots
 
         if telegram_account.present?
           if telegram_account.telegram_id
-            unless @auth_data['id'].to_i == telegram_account.telegram_id
+            if @auth_data['id'].to_i != telegram_account.telegram_id
               return nil
             end
           else
@@ -51,7 +55,7 @@ module RedmineBots
         else
           telegram_account = model_class.find_or_initialize_by(telegram_id: @auth_data['id'])
           if telegram_account.user_id
-            unless telegram_account.user_id == @user.id
+            if telegram_account.user_id != @user.id
               return nil
             end
           else
@@ -59,6 +63,18 @@ module RedmineBots
           end
         end
         telegram_account
+      end
+
+      def create_account_after_2fa(telegram_account)
+        return true if telegram_account.is_a?(TelegramAccount)
+
+        telegram_account_2fa = prepare_telegram_account(model_class: TelegramAccount)
+
+        return false unless telegram_account_2fa
+
+        telegram_account_2fa.assign_attributes(@auth_data.slice('first_name', 'last_name', 'username'))
+
+        telegram_account_2fa.save
       end
 
       def hash_valid?
