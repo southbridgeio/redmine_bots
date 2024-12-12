@@ -77,6 +77,7 @@ en:
             hash_invalid: Hash is invalid
             hash_outdated: Request is outdated
             wrong_account: Wrong Telegram account
+            account_exists: This Telegram account is linked to another account
             not_persisted: Failed to persist Telegram account data
             invalid_token: Token is invalid
           follow_link: Please, follow link

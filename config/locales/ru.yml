@@ -78,6 +78,7 @@ ru:
             hash_invalid: Неверный Hash
             hash_outdated: Истекло время ожидания
             wrong_account: Неверный аккаунт Telegram
+            account_exists: Этот аккаунт Telegram привязан к другой учётной записи
             not_persisted: Не удалось сохранить данные о Telegram-аккаунте
             invalid_token: Неверный token
           follow_link: Пожалуйста, проследуйте по ссылке
