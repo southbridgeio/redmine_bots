@@ -29,7 +29,7 @@ module RedmineBots::Telegram
       action = UserAction.from_payload(payload)
 
       persistent_commands.each do |command_class|
-        command = command_class.retrieve(action.from_id)
+        command = command_class.retrieve(action.from_id) if action.message?
         next unless command
 
         command.resume!(action: action)
