@@ -63,7 +63,11 @@ class RedmineBots::Telegram::Bot
     end
 
     def command
-      command? ? [message.text.match(/^\/(\w+)/)[1], message.text.match(/^\/\w+ (.+)$/).try(:[], 1)] : []
+      if command? && message.text.match(/^\/(\w+)/).present?
+        [message.text.match(/^\/(\w+)/)[1], message.text.match(/^\/\w+ (.+)$/).try(:[], 1)]
+      end
+
+      []
     end
 
     def private?
