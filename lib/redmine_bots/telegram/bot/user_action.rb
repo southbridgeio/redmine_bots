@@ -64,7 +64,7 @@ class RedmineBots::Telegram::Bot
 
     def command
       if command? && message.text.match(/^\/(\w+)/).present?
-        [message.text.match(/^\/(\w+)/)[1], message.text.match(/^\/\w+ (.+)$/).try(:[], 1)]
+        return [message.text.match(/^\/(\w+)/)[1], message.text.match(/^\/\w+ (.+)$/).try(:[], 1)]
       end
 
       []
