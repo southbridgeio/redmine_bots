@@ -29,8 +29,8 @@ module RedmineBots::Telegram::Tdlib
     def close_basic_group(chat, robot_ids)
       client.get_basic_group_full_info(basic_group_id: chat.type.basic_group_id).then do |group_info|
         bot_id, robot_id = robot_ids
-        bot_member_ids, regular_member_ids = group_info.members.partition { |m| m.user_id.in?(robot_ids) }.map do |arr|
-          arr.map(&:user_id)
+        bot_member_ids, regular_member_ids = group_info.members.partition { |m| m.member_id.in?(robot_ids) }.map do |arr|
+          arr.map(&:member_id)
         end
         member_ids = (regular_member_ids + (bot_member_ids & [bot_id]) + (bot_member_ids & [robot_id]))
         member_ids.reduce(Promises.fulfilled_future(nil)) do |promise, member_id|
