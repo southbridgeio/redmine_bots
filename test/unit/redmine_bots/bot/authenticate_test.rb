@@ -66,7 +66,7 @@ class RedmineBots::Telegram::Bot::AuthenticateTest < ActiveSupport::TestCase
         result = described_class.new(users(:user_3), { 'id' => 1, 'first_name' => 'test', 'last_name' => 'test', 'hash' => 'auth_hash', 'auth_date' => Time.now.to_i }, context: 'account_connection').call
 
         expect(result.success?).must_equal false
-        expect(result.value).must_equal "Wrong Telegram account"
+        expect(result.value).must_equal "This Telegram account is linked to another account"
       end
     end
 

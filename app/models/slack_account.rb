@@ -1,3 +1,3 @@
-class SlackAccount < ActiveRecord::Base
+class SlackAccount < ApplicationRecord
   belongs_to :user
 end

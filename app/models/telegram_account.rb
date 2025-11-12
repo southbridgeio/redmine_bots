@@ -1,4 +1,4 @@
-class TelegramAccount < ActiveRecord::Base
+class TelegramAccount < ApplicationRecord
   belongs_to :user
 
   def name

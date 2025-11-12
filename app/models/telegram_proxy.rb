@@ -1,4 +1,4 @@
-class TelegramProxy < ActiveRecord::Base
+class TelegramProxy < ApplicationRecord
   enum protocol: %i[http socks5]
 
   validates_presence_of :host, :port, :protocol
