@@ -6,7 +6,7 @@ class TelegramWebhookController < ActionController::Metal
       return
     end
 
-    TelegramHandlerWorker.perform_async(params)
+    TelegramHandlerWorker.perform_async(params.as_json)
 
     self.status = 200
     self.response_body = ''

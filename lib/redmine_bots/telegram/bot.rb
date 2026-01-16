@@ -66,7 +66,7 @@ module RedmineBots::Telegram
     end
 
     def webhook_secret
-      Digest::SHA256.hexdigest(Rails.application.secrets[:secret_key_base])
+      Digest::SHA256.hexdigest(Rails.application.secret_key_base)
     end
 
     def async

@@ -37,7 +37,7 @@ namespace :redmine_bots do
   end
 
   task migrate_from_telegram_common: :environment do
-    class TelegramCommonAccount < ActiveRecord::Base
+    class TelegramCommonAccount < ApplicationRecord
     end
 
     TelegramAccount.transaction do
