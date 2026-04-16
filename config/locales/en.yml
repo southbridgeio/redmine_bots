@@ -84,6 +84,7 @@ en:
           send_to_telegram: Send auth link to Telegram
           widget_not_visible: if widget isn not visible
           write_to_bot: "Please, write command /token to bot @%{bot} if widget is not visible"
+      hook_domain: "On empty value will be used domain \"%{default_url}\""
     slack:
       commands:
         connect: connect Slack account with Redmine

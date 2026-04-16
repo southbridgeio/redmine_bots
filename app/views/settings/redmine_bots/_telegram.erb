@@ -54,6 +54,12 @@
   <a target="_blank" href ="https://my.telegram.org/apps">API ID and API Hash can be obtained here</a>
 </p>
 
+<p>
+  <label for="settings_telegram_bot_hook_domain">Bot hook domain (optional)</label>
+  <%= text_field_tag 'settings[telegram_bot_hook_domain]', @settings['telegram_bot_hook_domain'], size: 50 %>
+  <em class="info"><%= l('redmine_bots.telegram.hook_domain', default_url: Setting.host_name) %></em></p>
+</p>
+
 <hr>
 
 <div style="display: flex; align-items: center;">
