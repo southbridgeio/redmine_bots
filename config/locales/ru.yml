@@ -85,8 +85,8 @@ ru:
           send_to_telegram: Отправить ссылку в Telegram
           widget_not_visible: если виджет недоступен
           write_to_bot: "Пожалуйста, напишите команду /token боту @%{bot}, если не видно виджет"
+      hook_domain: "Для пустого значения будет использован домен \"%{default_url}\""
     slack:
       commands:
         connect: связывание аккаунтов Slack и Redmine
         help: помощь по командам
-

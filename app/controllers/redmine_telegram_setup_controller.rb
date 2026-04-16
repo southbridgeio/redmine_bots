@@ -46,7 +46,8 @@ class RedmineTelegramSetupController < ApplicationController
   end
 
   def bot_init
-    web_hook_url = "https://#{Setting.host_name}/telegram/api/web_hook/#{RedmineBots::Telegram.webhook_secret}"
+    web_hook_domain = RedmineBots.settings('telegram_bot_hook_domain').presence || Setting.host_name
+    web_hook_url = "https://#{web_hook_domain}/telegram/api/web_hook/#{RedmineBots::Telegram.webhook_secret}"
 
     bot = RedmineBots::Telegram.init_bot
     bot.api.setWebhook(url: web_hook_url)
