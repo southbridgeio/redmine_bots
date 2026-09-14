@@ -1,3 +1,11 @@
+# 0.7.0
+
+* Add Yandex Messenger Bot API client and settings tab
+* Add YandexAccount: the binding between a Redmine user and their Yandex 360 login
+* Add the Yandex 360 login field to My account and to the admin user form
+* Add the Yandex webhook endpoint and the "/connect" command that links an account without typing a login
+* Bump plugin version to 0.7.0
+
 # 0.6.0
 * Add compatibility with Redmine 6.1
 * Add compatibility with Sidekiq 7.x

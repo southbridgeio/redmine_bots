@@ -1,10 +1,25 @@
 ru:
   permission_view_telegram_account_info: Просмотр информации о профиле Telegram
   redmine_bots:
+    yandex:
+      field_login: Логин Яндекс 360
+      field_login_hint: Логин (почта) в Яндекс 360 — по нему бот добавляет вас в чаты Яндекс Мессенджера.
+      field_login_connect_hint: Надёжнее не вводить вручную, а написать «/connect» боту %{bot} в Яндекс Мессенджере — он пришлёт ссылку для привязки.
+      login_verified: подтверждён ботом
+      connect:
+        link: "Чтобы привязать аккаунт, откройте эту ссылку, будучи авторизованным в Фабрике: %{link}"
+        already_connected: "Аккаунт уже привязан к пользователю %{user}."
+        no_login: Не удалось определить ваш логин в Яндекс 360.
+        connected: "Аккаунт Яндекс 360 «%{login}» привязан."
+        invalid_token: Ссылка для привязки недействительна или устарела. Запросите новую командой «/connect» боту.
+        taken: "Этот логин Яндекс 360 уже привязан к пользователю %{user}."
     label:
+      yandex: Яндекс Мессенджер
       slack: Slack
       telegram: Telegram
     settings:
+      yandex_bot_token: OAuth-токен бота
+      yandex_bot_token_hint: Токен бота из Яндекс 360 для бизнеса (admin.yandex.ru/bot-platform).
       deprecated_plugins: 'Внимание! Установлены устаревшие плагины:'
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token

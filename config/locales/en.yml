@@ -1,9 +1,24 @@
 en:
   redmine_bots:
+    yandex:
+      field_login: Yandex 360 login
+      field_login_hint: Your Yandex 360 login (e-mail) - the bot uses it to add you to Yandex Messenger chats.
+      field_login_connect_hint: Rather than typing it, send "/connect" to the %{bot} bot in Yandex Messenger and follow the link it replies with.
+      login_verified: verified by the bot
+      connect:
+        link: "To link your account, open this link while signed in to Redmine: %{link}"
+        already_connected: "The account is already linked to %{user}."
+        no_login: Could not determine your Yandex 360 login.
+        connected: "Yandex 360 account \"%{login}\" linked."
+        invalid_token: This linking link is invalid or has expired. Ask the bot for a new one with "/connect".
+        taken: "This Yandex 360 login is already linked to %{user}."
     label:
+      yandex: Yandex Messenger
       slack: Slack
       telegram: Telegram
     settings:
+      yandex_bot_token: OAuth bot token
+      yandex_bot_token_hint: Bot token issued in Yandex 360 for Business (admin.yandex.ru/bot-platform).
       deprecated_plugins: 'Warning! Deprecated plugins installed:'
       slack_oauth_token: OAuth Access Token
       slack_bot_oauth_token: Bot User OAuth Access Token

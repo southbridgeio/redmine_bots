@@ -1,0 +1,8 @@
+<p>
+  <label>
+    <%= t 'redmine_bots.settings.yandex_bot_token' %>
+  </label>
+  <%= text_field_tag 'settings[yandex_bot_token]', @settings['yandex_bot_token'], type: 'password', size: 60 %>
+  <a href="javascript:void(0);" toggle="#settings_yandex_bot_token" class="toggle-password">[Показать]</a>
+  <em class="info"><%= t 'redmine_bots.settings.yandex_bot_token_hint' %></em>
+</p>

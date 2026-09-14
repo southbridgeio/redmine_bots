@@ -1,11 +1,24 @@
 logged:
   id: 1
   type: User
+  login: logged
+  firstname: Logged
+  lastname: User
+  status: 1
 
+# User.anonymous looks this row up by lastname, so it has to carry it.
 anonymous:
   id: 2
   type: AnonymousUser
+  login: ''
+  firstname: ''
+  lastname: Anonymous
+  status: 0
 
 user_3:
   id: 3
   type: User
+  login: user3
+  firstname: Third
+  lastname: User
+  status: 1

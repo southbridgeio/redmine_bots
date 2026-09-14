@@ -30,3 +30,11 @@ scope :telegram_proxies do
   post '/' => 'telegram_proxies#update', as: :telegram_proxies_update
   delete '/:id' => 'telegram_proxies#destroy', as: :telegram_proxy_destroy
 end
+
+scope :yandex do
+  scope :api do
+    post 'web_hook/:secret', to: YandexWebhookController.action(:update), as: 'yandex_webhook'
+  end
+
+  get 'connect/:token' => 'yandex_connect#show', as: 'yandex_connect'
+end
