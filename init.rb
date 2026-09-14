@@ -16,12 +16,14 @@ register_after_redmine_initialize_proc =
     reloader.public_method(:to_prepare)
   end
 register_after_redmine_initialize_proc.call do
-  paths = '/lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}.rb'
+  paths = '/lib/redmine_bots/{patches/*_patch,telegram/{patches/*_patch,hooks/*_hook},yandex/hooks/*_hook}.rb'
 
   Dir.glob(File.dirname(__FILE__) + paths).each do |file|
     require_dependency file
   end
 end
+
+User.prepend(RedmineBots::Patches::UserPatch) unless User.ancestors.include?(RedmineBots::Patches::UserPatch)
 
 Rails.application.config.eager_load_paths += Dir.glob("#{Rails.application.config.root}/plugins/redmine_bots/{lib,app/workers,app/models,app/controllers,lib/redmine_bots/telegram/{patches/*_patch,hooks/*_hook}}")
 
@@ -29,7 +31,7 @@ Redmine::Plugin.register :redmine_bots do
   name 'Redmine Bots'
   url 'https://github.com/southbridgeio/redmine_bots'
   description 'This is a platform for building Redmine bots'
-  version '0.6.0'
+  version '0.7.0'
   author 'Southbridge'
   author_url 'https://github.com/southbridgeio'
 
@@ -40,6 +42,7 @@ Redmine::Plugin.register :redmine_bots do
      'slack_client_id' => '',
      'slack_client_secret' => '',
      'slack_verification_token' => '',
+     'yandex_bot_token' => '',
     },
     partial: 'settings/redmine_bots'
   )
@@ -56,3 +59,4 @@ Sidekiq.configure_server do |config|
 end
 
 RedmineBots::Telegram.init
+RedmineBots::Yandex.init

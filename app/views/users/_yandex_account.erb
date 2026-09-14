@@ -1,0 +1,16 @@
+<% if RedmineBots::Yandex.enabled? %>
+  <% account = user.yandex_account %>
+  <p>
+    <label for="user_yandex_login"><%= t('redmine_bots.yandex.field_login') %></label>
+    <%= text_field_tag 'user[yandex_login]', user.yandex_login, id: 'user_yandex_login', size: 40 %>
+    <% if account&.verified? %>
+      <span class="icon icon-checked"><%= t('redmine_bots.yandex.login_verified') %></span>
+    <% end %>
+    <em class="info">
+      <%= t('redmine_bots.yandex.field_login_hint') %>
+      <% if RedmineBots::Yandex.bot_name.present? %>
+        <%= t('redmine_bots.yandex.field_login_connect_hint', bot: RedmineBots::Yandex.bot_name) %>
+      <% end %>
+    </em>
+  </p>
+<% end %>
